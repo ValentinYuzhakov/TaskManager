@@ -6,9 +6,9 @@ namespace TaskManager.Data.DataContext.Interfaces
 {
     public interface IDataContext<TEntity> where TEntity : Entity
     {
-        public Task CreateAsync(TEntity entity);
-        public Task DeleteAsync(TEntity entity);
-        public Task<TEntity> GetAsync(Guid entityId);
-        public Task UpdateAsync(TEntity entity);
+        Task CreateAsync(TEntity entity);
+        Task DeleteAsync(TEntity entity);
+        Task<TEntity> GetAsync(Guid entityId);
+        Task UpdateAsync(TEntity entity);
     }
 }
