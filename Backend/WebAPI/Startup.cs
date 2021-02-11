@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Data;
+using TaskManager.Data.Extensions;
 using TaskManager.Domain.Models;
 
 namespace WebAPI
@@ -30,6 +31,8 @@ namespace WebAPI
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TaskManagerLocalDB")))
                 .AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<DatabaseContext>();
+
+            services.AddRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
