@@ -12,7 +12,6 @@ namespace TaskManager.Data.Repositories
     {
         private readonly DatabaseContext dbContext;
 
-
         public ToDoTaskRepository(DatabaseContext dbContext)
         {
             this.dbContext = dbContext;
