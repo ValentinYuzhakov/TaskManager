@@ -1,41 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using TaskManager.Data.DataContext.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.Data.Repositories
 {
-    public class ToDoTaskRepository : IRepository<ToDoTask>
+    public class ToDoTaskRepository : IToDoTaskRepository
     {
-        private readonly DatabaseContext dbContext;
+        private readonly IDataContext<ToDoTask> context;
 
-        public ToDoTaskRepository(DatabaseContext dbContext)
+
+        public ToDoTaskRepository(IDataContext<ToDoTask> context)
         {
-            this.dbContext = dbContext;
+            this.context = context;
         }
 
 
-        public async Task Create(ToDoTask entity)
+        public async Task CreateAsync(ToDoTask entity)
         {
-            await dbContext.AddAsync(entity);
+            await context.CreateAsync(entity);
         }
 
-        public void Delete(ToDoTask entity)
+        public async Task DeleteAsync(ToDoTask entity)
         {
-            dbContext.Remove(entity);
+            await context.DeleteAsync(entity);
         }
 
-        public async Task<ToDoTask> Get(Guid entityId)
+        public async Task<ToDoTask> GetAsync(Guid entityId)
         {
-            return await dbContext.Tasks.FindAsync(entityId);
+            return await context.GetAsync(entityId);
         }
 
-        public void Update(ToDoTask entity)
+        public async Task UpdateAsync(ToDoTask entity)
         {
-            dbContext.Update(entity);
+            await context.UpdateAsync(entity);
         }
     }
 }

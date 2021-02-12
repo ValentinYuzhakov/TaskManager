@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mapping\" />
-    <Folder Include="Services\Interfaces\" />
+    <ProjectReference Include="..\TaskManager.Data\TaskManager.Data.csproj" />
+    <ProjectReference Include="..\TaskManager.Domain\TaskManager.Domain.csproj" />
   </ItemGroup>
 
 </Project>

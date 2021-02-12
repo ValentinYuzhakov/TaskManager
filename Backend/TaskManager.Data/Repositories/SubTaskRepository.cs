@@ -1,38 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Data.DataContext.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.Data.Repositories
 {
-    public class SubTaskRepository : IRepository<SubTask>
+    public class SubTaskRepository : ISubTaskRepository
     {
+        private readonly IDataContext<SubTask> context;
 
-        public SubTaskRepository()
+
+        public SubTaskRepository(IDataContext<SubTask> context)
         {
-
+            this.context = context;
         }
 
-        public Task Create(SubTask entity)
+
+        public async Task CreateAsync(SubTask entity)
         {
-            throw new NotImplementedException();
+            await context.CreateAsync(entity);
         }
 
-        public void Delete(SubTask entity)
+        public async Task DeleteAsync(SubTask entity)
         {
-            throw new NotImplementedException();
+            await context.DeleteAsync(entity);
         }
 
-        public Task<SubTask> Get(Guid entity)
+        public async Task<SubTask> GetAsync(Guid entityId)
         {
-            throw new NotImplementedException();
+            return await context.GetAsync(entityId);
         }
 
-        public void Update(SubTask entity)
+        public async Task UpdateAsync(SubTask entity)
         {
-            throw new NotImplementedException();
+            await context.UpdateAsync(entity);
         }
     }
 }

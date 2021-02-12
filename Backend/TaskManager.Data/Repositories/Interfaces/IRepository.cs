@@ -6,9 +6,9 @@ namespace TaskManager.Data.Repositories.Interfaces
 {
     public interface IRepository<T> where T : Entity
     {
-        Task Create(T entity);
-        void Delete(T entity);
-        Task<T> Get(Guid entity);
-        void Update(T entity);
+        Task CreateAsync(T entity);
+        Task DeleteAsync(T entity);
+        Task<T> GetAsync(Guid entity);
+        Task UpdateAsync(T entity);
     }
 }
