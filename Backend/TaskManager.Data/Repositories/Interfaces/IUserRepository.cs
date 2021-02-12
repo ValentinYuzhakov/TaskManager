@@ -5,7 +5,7 @@ using TaskManager.Domain.Models;
 
 namespace TaskManager.Data.Repositories.Interfaces
 {
-    public interface ITaskFolderRepository : IRepository<TaskFolder>
+    public interface IUserRepository : IRepository<User>
     {
     }
 }

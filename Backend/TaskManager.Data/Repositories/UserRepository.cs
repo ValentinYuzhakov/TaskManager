@@ -5,33 +5,33 @@ using TaskManager.Domain.Models;
 
 namespace TaskManager.Data.Repositories
 {
-    public class ToDoTaskRepository : IToDoTaskRepository
+    public class UserRepository : IUserRepository
     {
-        private readonly DatabaseContext context;
+        readonly DatabaseContext context;
 
 
-        public ToDoTaskRepository(DatabaseContext context)
+        public UserRepository(DatabaseContext context)
         {
             this.context = context;
         }
 
 
-        public async Task CreateAsync(ToDoTask entity)
+        public async Task CreateAsync(User entity)
         {
             await context.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(ToDoTask entity)
+        public async Task DeleteAsync(User entity)
         {
             await Task.Run(() => context.Remove(entity));
         }
 
-        public async Task<ToDoTask> GetAsync(Guid entityId)
+        public async Task<User> GetAsync(Guid entityId)
         {
-            return await context.Tasks.FindAsync(entityId);
+            return await context.Users.FindAsync(entityId);
         }
 
-        public async Task UpdateAsync(ToDoTask entity)
+        public async Task UpdateAsync(User entity)
         {
             await Task.Run(() => context.Update(entity));
         }

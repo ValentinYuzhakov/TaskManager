@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TaskManager.Domain.Enums;
+using TaskManager.Domain.Models.Abstracts;
 
 namespace TaskManager.Domain.Models
 {

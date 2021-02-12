@@ -2,16 +2,19 @@
 using System;
 using System.Threading.Tasks;
 using TaskManager.Data.DataContext.Interfaces;
-using TaskManager.Domain.Models;
+using TaskManager.Domain.Models.Abstracts;
 
 namespace TaskManager.Data.DataContext
 {
-    public class SqlContext<TEntity> : IDataContext<TEntity> where TEntity : Entity
+    public class SqlContext<TEntity, TContext> : IDataContext<TEntity>
+        where TEntity : class, IEntity<Guid>
+        where TContext : DbContext
     {
+        private readonly TContext context;
         private readonly DbSet<TEntity> dbSet;
 
 
-        public SqlContext(DatabaseContext context)
+        public SqlContext(TContext context)
         {
             dbSet = context.Set<TEntity>();
         }
@@ -35,6 +38,11 @@ namespace TaskManager.Data.DataContext
         public async Task DeleteAsync(TEntity entity)
         {
             await Task.Run(() => dbSet.Remove(entity));
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using TaskManager.Domain.Models.Abstracts;
 
 namespace TaskManager.Domain.Models
 {
-    public class User : IdentityUser<Guid>
+    public class User : IdentityUser<Guid>, IEntity<Guid>
     {
         public string FirstName { get; set; }
         public string SecondName { get; set; }

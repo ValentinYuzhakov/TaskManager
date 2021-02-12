@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TaskManager.Data.DataContext.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Models;
 
@@ -8,10 +7,10 @@ namespace TaskManager.Data.Repositories
 {
     public class TaskFolderRepository : ITaskFolderRepository
     {
-        private readonly IDataContext<TaskFolder> context;
+        private readonly DatabaseContext context;
 
 
-        public TaskFolderRepository(IDataContext<TaskFolder> context)
+        public TaskFolderRepository(DatabaseContext context)
         {
             this.context = context;
         }
@@ -19,22 +18,22 @@ namespace TaskManager.Data.Repositories
 
         public async Task CreateAsync(TaskFolder entity)
         {
-            await context.CreateAsync(entity);
+            await context.AddAsync(entity);
         }
 
         public async Task DeleteAsync(TaskFolder entity)
         {
-            await context.DeleteAsync(entity);
+            await Task.Run(() => context.Remove(entity));
         }
 
         public async Task<TaskFolder> GetAsync(Guid entityId)
         {
-            return await context.GetAsync(entityId);
+            return await context.TaskFolders.FindAsync(entityId);
         }
 
         public async Task UpdateAsync(TaskFolder entity)
         {
-            await context.UpdateAsync(entity);
+            await Task.Run(() => context.Update(entity));
         }
     }
 }
