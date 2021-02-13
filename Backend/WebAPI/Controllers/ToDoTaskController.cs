@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using TaskManager.Data;
 using TaskManager.Data.Services.Interfaces;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos;
+using TaskManager.Shared.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -15,7 +17,7 @@ namespace WebAPI.Controllers
     public class ToDoTaskController : ControllerBase
     {
         private readonly ITodoTaskService taskService;
-        private DatabaseContext context;
+        private readonly DatabaseContext context;
 
 
         public ToDoTaskController(ITodoTaskService taskService, DatabaseContext context)
@@ -25,19 +27,24 @@ namespace WebAPI.Controllers
         }
 
 
-        [HttpPost("Create")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateToDoTask([FromBody] CreateTodoTaskInfo request)
         {
             await taskService.CreateToDoTask(request);
             return Ok();
         }
 
-        [HttpGet("get")]
-        public async Task<List<ToDoTask>> Get()
+        [HttpGet("{taskId}")]
+        public async Task<ToDoTaskView> GetTask(Guid taskId)
         {
-            var tasks = context.Tasks.ToList();
-            return tasks;
+            var taskView = await taskService.GetById(taskId);
+            return taskView;
         }
 
+        [HttpGet("all/{userId}")]
+        public async Task<List<ToDoTaskView>> GetTasksByUser(Guid userId)
+        {
+            return await taskService.GetTasksByUser(userId);
+        }
     }
 }
