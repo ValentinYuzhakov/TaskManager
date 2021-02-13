@@ -15,5 +15,9 @@ namespace TaskManager.Data
         public DatabaseContext(DbContextOptions options) : base(options) { }
 
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
 }

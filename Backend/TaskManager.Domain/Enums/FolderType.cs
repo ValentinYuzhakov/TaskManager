@@ -5,6 +5,7 @@
         Default,
         Planned,
         Important,
-        Today
+        Tasks,
+        Today,
     }
 }
