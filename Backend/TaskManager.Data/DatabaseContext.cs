@@ -15,14 +15,5 @@ namespace TaskManager.Data
         public DatabaseContext(DbContextOptions options) : base(options) { }
 
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<ToDoTask>()
-                .HasMany(t => t.Folders)
-                .WithMany(f => f.ToDoTasks)
-                .UsingEntity(j => j.ToTable("TaskFolderToDoTask"));
-
-            base.OnModelCreating(builder);
-        }
     }
 }

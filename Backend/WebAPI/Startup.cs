@@ -12,8 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Core.Extensions;
 using TaskManager.Data;
-using TaskManager.Data.DataContext;
-using TaskManager.Data.DataContext.Interfaces;
 using TaskManager.Data.Extensions;
 using TaskManager.Data.Mapping;
 using TaskManager.Domain.Models;
@@ -32,11 +30,11 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TaskManagerLocalDB")))
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TaskManagerLocalDB"),
+                b => b.MigrationsAssembly("TaskManager.Data")))
                 .AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<DatabaseContext>();
 
-            //services.AddDataContext();
             services.AddAutoMapper(config => config.AddProfile<MapProfile>());
             services.AddServices();
             services.AddRepositories();
