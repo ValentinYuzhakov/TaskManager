@@ -8,7 +8,7 @@ namespace TaskManager.Domain.Models
     public class TaskFolder : Entity
     {
         public string Name { get; set; }
-        public IList<ToDoTask> ToDoTasks { get; set; } = new List<ToDoTask>();
+        public IList<ToDoTask> ToDoTasks { get; } = new List<ToDoTask>();
         public Guid CreatorId { get; set; }
         public User Creator { get; set; }
         public Guid ParentFolderId { get; set; }

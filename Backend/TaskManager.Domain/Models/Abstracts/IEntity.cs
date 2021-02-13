@@ -2,8 +2,8 @@
 
 namespace TaskManager.Domain.Models.Abstracts
 {
-    public interface IEntity<TKey> where TKey : IEquatable<TKey>
+    public interface IEntity
     {
-        public TKey Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

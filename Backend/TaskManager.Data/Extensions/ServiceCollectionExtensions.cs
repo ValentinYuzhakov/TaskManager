@@ -17,11 +17,11 @@ namespace TaskManager.Data.Extensions
             return services;
         }
 
-        public static IServiceCollection AddDataContext(this IServiceCollection services)
-        {
-            services.AddScoped(typeof(IDataContext<>), typeof(SqlContext<>));
+        //public static IServiceCollection AddDataContext(this IServiceCollection services)
+        //{
+        //    services.AddScoped(typeof(IDataContext<>), typeof(SqlContext<>));
 
-            return services;
-        }
+        //    return services;
+        //}
     }
 }

@@ -10,10 +10,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TaskManager.Core.Extensions;
 using TaskManager.Data;
 using TaskManager.Data.DataContext;
 using TaskManager.Data.DataContext.Interfaces;
 using TaskManager.Data.Extensions;
+using TaskManager.Data.Mapping;
 using TaskManager.Domain.Models;
 
 namespace WebAPI
@@ -34,7 +36,9 @@ namespace WebAPI
                 .AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<DatabaseContext>();
 
-            services.AddDataContext();
+            //services.AddDataContext();
+            services.AddAutoMapper(config => config.AddProfile<MapProfile>());
+            services.AddServices();
             services.AddRepositories();
             services.AddControllers();
         }

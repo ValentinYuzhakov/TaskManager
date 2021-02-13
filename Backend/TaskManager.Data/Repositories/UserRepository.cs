@@ -35,5 +35,10 @@ namespace TaskManager.Data.Repositories
         {
             await Task.Run(() => context.Update(entity));
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await context.SaveChangesAsync();
+        }
     }
 }
