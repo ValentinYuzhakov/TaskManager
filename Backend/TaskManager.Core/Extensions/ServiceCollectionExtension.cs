@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TaskManager.Data.Services;
-using TaskManager.Data.Services.Interfaces;
+using TaskManager.Core.Services;
+using TaskManager.Core.Services.Interfaces;
 
 namespace TaskManager.Core.Extensions
 {

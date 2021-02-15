@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TaskManager.Data.Services.Interfaces;
+using TaskManager.Core.Services.Interfaces;
 
-namespace TaskManager.Data.Services
+namespace TaskManager.Core.Services
 {
     public class TaskFolderService : ITaskFolderService
     {

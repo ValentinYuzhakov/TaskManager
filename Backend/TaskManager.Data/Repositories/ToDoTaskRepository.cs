@@ -35,7 +35,7 @@ namespace TaskManager.Data.Repositories
 
         public async Task UpdateAsync(ToDoTask entity)
         {
-            await Task.Run(() => context.Update(entity));
+            await Task.Run(() => context.Tasks.Update(entity));
         }
 
         public async Task<List<ToDoTask>> GetAllAsync()

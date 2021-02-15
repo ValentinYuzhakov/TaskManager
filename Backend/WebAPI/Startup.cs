@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using TaskManager.Core.Extensions;
 using TaskManager.Data;
 using TaskManager.Data.Extensions;
-using TaskManager.Data.Mapping;
+using TaskManager.Core.Mapping;
 using TaskManager.Domain.Models;
 
 namespace WebAPI

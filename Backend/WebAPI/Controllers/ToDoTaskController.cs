@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TaskManager.Data.Services.Interfaces;
+using TaskManager.Core.Services.Interfaces;
 using TaskManager.Shared.Infos;
 using TaskManager.Shared.ViewModels;
 
@@ -44,6 +44,20 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateTask([FromBody] UpdateToDoTaskInfo request)
         {
             await taskService.UpdateToDoTask(request);
+            return Ok();
+        }
+
+        [HttpPut("update/priority")]
+        public async Task<IActionResult> UpdateTaskPriority([FromBody] UpdateToDoTaskPriorityInfo request)
+        {
+            await taskService.UpdatePriority(request);
+            return Ok();
+        }
+
+        [HttpPut("update/status")]
+        public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateToDoTaskStatusInfo request)
+        {
+            await taskService.UpdateStatus(request);
             return Ok();
         }
     }

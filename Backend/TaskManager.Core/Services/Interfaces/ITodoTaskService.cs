@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TaskManager.Shared.Infos;
 using TaskManager.Shared.ViewModels;
 
-namespace TaskManager.Data.Services.Interfaces
+namespace TaskManager.Core.Services.Interfaces
 {
     public interface ITodoTaskService
     {
@@ -13,5 +13,7 @@ namespace TaskManager.Data.Services.Interfaces
         Task<ToDoTaskView> GetById(Guid taskId);
         Task<List<ToDoTaskView>> GetTasksByUser(Guid userId);
         Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo);
+        Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo);
+        Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo)
     }
 }

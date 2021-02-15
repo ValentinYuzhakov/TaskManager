@@ -3,13 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TaskManager.Data.Repositories.Interfaces;
-using TaskManager.Data.Services.Interfaces;
+using TaskManager.Core.Extensions;
+using TaskManager.Core.Repositories.Interfaces;
+using TaskManager.Core.Services.Interfaces;
+using TaskManager.Domain.Enums;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos;
 using TaskManager.Shared.ViewModels;
 
-namespace TaskManager.Data.Services
+namespace TaskManager.Core.Services
 {
     public class ToDoTaskService : ITodoTaskService
     {
@@ -47,7 +49,38 @@ namespace TaskManager.Data.Services
 
         public async Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo)
         {
+            var taskToUpdate = await repository.GetAsync(taskinfo.Id);
+            var todoTask = mapper.Map<ToDoTask>(taskinfo);
 
+            taskToUpdate.Title = todoTask.Title ?? taskToUpdate.Title;
+            taskToUpdate.Comment = todoTask.Comment ?? taskToUpdate.Comment;
+            taskToUpdate.ModificationDate = DateTime.Now;
+
+            if (!todoTask.EndDate.IsDefault())
+            {
+                taskToUpdate.EndDate = todoTask.EndDate;
+            }
+
+            await repository.UpdateAsync(taskToUpdate);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo)
+        {
+            var task = await repository.GetAsync(taskInfo.Id);
+            task.TaskPriority = Enum.Parse<TaskPriority>(taskInfo.TaskPriority);
+
+            await repository.UpdateAsync(task);
+            await repository.SaveChangesAsync();
+        }
+
+        public async Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo)
+        {
+            var task = await repository.GetAsync(taskInfo.Id);
+            task.TaskStatus = Enum.Parse<TaskManager.Domain.Enums.TaskStatus>(taskInfo.TaskStatus);
+
+            await repository.UpdateAsync(task);
+            await repository.SaveChangesAsync();
         }
     }
 }
