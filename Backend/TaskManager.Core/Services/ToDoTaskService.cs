@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Core.Extensions;
-using TaskManager.Core.Repositories.Interfaces;
+using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Domain.Enums;
 using TaskManager.Domain.Models;

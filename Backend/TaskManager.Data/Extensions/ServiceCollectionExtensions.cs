@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TaskManager.Core.Repositories;
-using TaskManager.Core.Repositories.Interfaces;
+using TaskManager.Data.Repositories;
+using TaskManager.Data.Repositories.Interfaces;
 
 namespace TaskManager.Data.Extensions
 {

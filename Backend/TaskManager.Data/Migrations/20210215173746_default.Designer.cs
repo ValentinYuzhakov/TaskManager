@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TaskManager.Core;
+using TaskManager.Data;
 
-namespace TaskManager.Core.Migrations
+namespace TaskManager.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20210215173746_default")]

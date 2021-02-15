@@ -14,6 +14,6 @@ namespace TaskManager.Core.Services.Interfaces
         Task<List<ToDoTaskView>> GetTasksByUser(Guid userId);
         Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo);
         Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo);
-        Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo)
+        Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo);
     }
 }
