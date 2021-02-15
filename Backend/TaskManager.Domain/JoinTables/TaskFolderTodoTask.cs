@@ -2,7 +2,7 @@
 using TaskManager.Domain.Models;
 using TaskManager.Domain.Models.Abstracts;
 
-namespace TaskManager.Domain
+namespace TaskManager.Domain.JoinTables
 {
     public class TaskFolderTodoTask : Entity
     {

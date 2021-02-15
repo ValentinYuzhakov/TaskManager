@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManager.Data;
 
 namespace TaskManager.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210215181017_defs")]
+    partial class defs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,9 +216,7 @@ namespace TaskManager.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<byte>("FolderType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint")
-                        .HasDefaultValue((byte)0);
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -240,7 +240,7 @@ namespace TaskManager.Data.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2021, 2, 15, 23, 39, 40, 900, DateTimeKind.Local).AddTicks(4673));
+                        .HasDefaultValue(new DateTime(2021, 2, 15, 21, 10, 16, 858, DateTimeKind.Local).AddTicks(8340));
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uniqueidentifier");

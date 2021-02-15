@@ -44,5 +44,10 @@ namespace TaskManager.Data.Services
             var userTasks = tasks.Where(t => t.CreatorId == userId).ToList();
             return mapper.Map<List<ToDoTaskView>>(userTasks);
         }
+
+        public async Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo)
+        {
+
+        }
     }
 }

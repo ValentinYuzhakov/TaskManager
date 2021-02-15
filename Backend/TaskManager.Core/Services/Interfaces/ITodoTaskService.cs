@@ -12,5 +12,6 @@ namespace TaskManager.Data.Services.Interfaces
         Task CreateToDoTask(CreateTodoTaskInfo taskInfo);
         Task<ToDoTaskView> GetById(Guid taskId);
         Task<List<ToDoTaskView>> GetTasksByUser(Guid userId);
+        Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo);
     }
 }

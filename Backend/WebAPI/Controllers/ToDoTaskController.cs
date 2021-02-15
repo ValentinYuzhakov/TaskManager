@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using TaskManager.Data;
 using TaskManager.Data.Services.Interfaces;
-using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos;
 using TaskManager.Shared.ViewModels;
 
@@ -17,13 +13,11 @@ namespace WebAPI.Controllers
     public class ToDoTaskController : ControllerBase
     {
         private readonly ITodoTaskService taskService;
-        private readonly DatabaseContext context;
 
 
-        public ToDoTaskController(ITodoTaskService taskService, DatabaseContext context)
+        public ToDoTaskController(ITodoTaskService taskService)
         {
             this.taskService = taskService;
-            this.context = context;
         }
 
 
@@ -37,14 +31,20 @@ namespace WebAPI.Controllers
         [HttpGet("{taskId}")]
         public async Task<ToDoTaskView> GetTask(Guid taskId)
         {
-            var taskView = await taskService.GetById(taskId);
-            return taskView;
+            return await taskService.GetById(taskId);
         }
 
         [HttpGet("all/{userId}")]
         public async Task<List<ToDoTaskView>> GetTasksByUser(Guid userId)
         {
             return await taskService.GetTasksByUser(userId);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateToDoTaskInfo request)
+        {
+            await taskService.UpdateToDoTask(request);
+            return Ok();
         }
     }
 }

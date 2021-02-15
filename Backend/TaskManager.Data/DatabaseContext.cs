@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using TaskManager.Data.Configurations;
+using TaskManager.Domain.Enums;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.Data
@@ -18,6 +20,10 @@ namespace TaskManager.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new ToDoTaskConfiguration());
+            builder.ApplyConfiguration(new SubTaskConfiguration());
+            builder.ApplyConfiguration(new TaskFolderConfiguration());
+
             base.OnModelCreating(builder);
         }
     }

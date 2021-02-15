@@ -8,4 +8,8 @@
     <ProjectReference Include="..\TaskManager.Domain\TaskManager.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ShortViewModels\" />
+  </ItemGroup>
+
 </Project>
