@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Core.Extensions;
-using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Core.Services.Interfaces;
+using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Enums;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos;
@@ -17,12 +17,15 @@ namespace TaskManager.Core.Services
     {
         private readonly IMapper mapper;
         private readonly IToDoTaskRepository repository;
+        private readonly ITaskFolderService taskFolderService;
 
 
-        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper)
+        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper,
+            ITaskFolderService taskFolderService)
         {
             this.repository = repository;
             this.mapper = mapper;
+            this.taskFolderService = taskFolderService;
         }
 
 
@@ -81,6 +84,32 @@ namespace TaskManager.Core.Services
 
             await repository.UpdateAsync(task);
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<List<ToDoTaskView>> GetDoneTasks(Guid userId)
+        {
+            var tasks = await repository.GetAllAsync();
+            var userDoneTasks = tasks.Where(t => t.CreatorId == userId &&
+                t.TaskStatus == Domain.Enums.TaskStatus.Done);
+
+            return mapper.Map<List<ToDoTaskView>>(userDoneTasks);
+        }
+
+        public async Task<List<ToDoTaskView>> GetImportantTasks(Guid userId)
+        {
+            var tasks = await repository.GetAllAsync();
+            var userImportantTasks = tasks.Where(t => t.CreatorId == userId &&
+                t.TaskPriority == TaskPriority.Highest || t.TaskPriority == TaskPriority.High).OrderByDescending(t => t.TaskPriority);
+
+            return mapper.Map<List<ToDoTaskView>>(userImportantTasks);
+        }
+
+        public async Task<List<ToDoTaskView>> GetDailyTasks(Guid userId)
+        {
+            var tasks = await repository.GetAllAsync();
+            var dailyTasks = tasks.Where(t => t.CreatorId == userId && t.Folders.Any(f => f.TaskFolder.FolderType == FolderType.Today));
+
+            return mapper.Map<List<ToDoTaskView>>(dailyTasks);
         }
     }
 }

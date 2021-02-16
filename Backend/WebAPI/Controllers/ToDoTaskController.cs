@@ -60,5 +60,23 @@ namespace WebAPI.Controllers
             await taskService.UpdateStatus(request);
             return Ok();
         }
+
+        [HttpGet("done/{userId}")]
+        public async Task<List<ToDoTaskView>> GetDoneTasks(Guid userId)
+        {
+            return await taskService.GetDoneTasks(userId);
+        }
+
+        [HttpGet("important/{userId}")]
+        public async Task<List<ToDoTaskView>> GetImportantTasks(Guid userId)
+        {
+            return await taskService.GetImportantTasks(userId);
+        }
+
+        [HttpGet("daily")]
+        public async Task<List<ToDoTaskView>> GetDailyTasks(Guid userId)
+        {
+            return await taskService.GetDailyTasks(userId);
+        }
     }
 }
