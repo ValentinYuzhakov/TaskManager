@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using TaskManager.Data.Configurations;
-using TaskManager.Domain.Enums;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.Data

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TaskManager.Core.Extensions;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Enums;
@@ -17,15 +16,15 @@ namespace TaskManager.Core.Services
     {
         private readonly IMapper mapper;
         private readonly IToDoTaskRepository repository;
-        //private readonly ITaskFolderService taskFolderService;
+        private readonly ITaskFolderService taskFolderService;
 
 
-        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper
-            /*ITaskFolderService taskFolderService*/)
+        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper,
+            ITaskFolderService taskFolderService)
         {
             this.repository = repository;
             this.mapper = mapper;
-            //this.taskFolderService = taskFolderService;
+            this.taskFolderService = taskFolderService;
         }
 
 
@@ -50,20 +49,9 @@ namespace TaskManager.Core.Services
 
         public async Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo)
         {
-
-
-            //taskToUpdate.Title = todoTask.Title ?? taskToUpdate.Title;
-            //taskToUpdate.Comment = todoTask.Comment ?? taskToUpdate.Comment;
-            //taskToUpdate.ModificationDate = DateTime.Now;
-
-            //if (!todoTask.EndDate.IsDefault())
-            //{
-            //    taskToUpdate.EndDate = todoTask.EndDate;
-            //}
             var taskToUpdate = await repository.GetAsync(taskinfo.Id);
             var todoTask = mapper.Map(taskinfo, taskToUpdate);
             await repository.UpdateAsync(todoTask);
-
         }
 
         public async Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo)

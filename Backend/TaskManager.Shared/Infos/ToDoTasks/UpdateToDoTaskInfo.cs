@@ -1,5 +1,4 @@
 ﻿using System;
-using TaskManager.Domain.Enums;
 
 namespace TaskManager.Shared.Infos.ToDoTasks
 {
