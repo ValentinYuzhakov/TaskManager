@@ -8,6 +8,7 @@ using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Enums;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos.ToDoTasks;
+using TaskManager.Shared.ShortViewModels;
 using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services
@@ -16,15 +17,12 @@ namespace TaskManager.Core.Services
     {
         private readonly IMapper mapper;
         private readonly IToDoTaskRepository repository;
-        private readonly ITaskFolderService taskFolderService;
 
 
-        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper,
-            ITaskFolderService taskFolderService)
+        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
-            this.taskFolderService = taskFolderService;
         }
 
 
@@ -91,6 +89,19 @@ namespace TaskManager.Core.Services
             var tasks = await repository.GetAllAsync(t => t.CreatorId == userId && t.Folders.Any(f => f.TaskFolder.FolderType == FolderType.Today));
 
             return mapper.Map<List<ToDoTaskView>>(tasks);
+        }
+
+        public async Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId)
+        {
+            var tasks = await repository.GetAllAsync(t => t.Folders.Any(f => f.TaskFolderId == folderId));
+            return mapper.Map<List<ToDoTaskShortView>>(tasks);
+        }
+
+        public async Task MoveTaskToFolder(Guid taskId, Guid folderId)
+        {
+            var task = await repository.GetAsync(taskId);
+            task.Folders.FirstOrDefault(f => f.TaskFolder.FolderType == FolderType.Default).TaskFolderId = folderId;
+            await repository.UpdateAsync(task);
         }
     }
 }

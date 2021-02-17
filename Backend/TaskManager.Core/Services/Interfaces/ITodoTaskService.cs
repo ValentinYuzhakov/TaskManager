@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaskManager.Shared.Infos.ToDoTasks;
+using TaskManager.Shared.ShortViewModels;
 using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services.Interfaces
@@ -17,5 +18,7 @@ namespace TaskManager.Core.Services.Interfaces
         Task<List<ToDoTaskView>> GetDoneTasks(Guid userId);
         Task<List<ToDoTaskView>> GetImportantTasks(Guid userId);
         Task<List<ToDoTaskView>> GetDailyTasks(Guid userId);
+        Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId);
+        Task MoveTaskToFolder(Guid taskId, Guid folderId);
     }
 }

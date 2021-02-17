@@ -24,6 +24,8 @@ namespace TaskManager.Core.Mapping
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForAllMembers(o => o.Condition((src, dest, member) => member is not null));
 
+            CreateMap<CreateTaskFolderInfo, TaskFolder>();
+            CreateMap<TaskFolder, TaskFolderView>();
 
         }
     }
