@@ -17,15 +17,15 @@ namespace TaskManager.Core.Services
     {
         private readonly IMapper mapper;
         private readonly IToDoTaskRepository repository;
-        private readonly ITaskFolderService taskFolderService;
+        //private readonly ITaskFolderService taskFolderService;
 
 
-        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper,
-            ITaskFolderService taskFolderService)
+        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper
+            /*ITaskFolderService taskFolderService*/)
         {
             this.repository = repository;
             this.mapper = mapper;
-            this.taskFolderService = taskFolderService;
+            //this.taskFolderService = taskFolderService;
         }
 
 
@@ -50,19 +50,20 @@ namespace TaskManager.Core.Services
 
         public async Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo)
         {
+
+
+            //taskToUpdate.Title = todoTask.Title ?? taskToUpdate.Title;
+            //taskToUpdate.Comment = todoTask.Comment ?? taskToUpdate.Comment;
+            //taskToUpdate.ModificationDate = DateTime.Now;
+
+            //if (!todoTask.EndDate.IsDefault())
+            //{
+            //    taskToUpdate.EndDate = todoTask.EndDate;
+            //}
             var taskToUpdate = await repository.GetAsync(taskinfo.Id);
-            var todoTask = mapper.Map<ToDoTask>(taskinfo);
+            var todoTask = mapper.Map(taskinfo, taskToUpdate);
+            await repository.UpdateAsync(todoTask);
 
-            taskToUpdate.Title = todoTask.Title ?? taskToUpdate.Title;
-            taskToUpdate.Comment = todoTask.Comment ?? taskToUpdate.Comment;
-            taskToUpdate.ModificationDate = DateTime.Now;
-
-            if (!todoTask.EndDate.IsDefault())
-            {
-                taskToUpdate.EndDate = todoTask.EndDate;
-            }
-
-            await repository.UpdateAsync(taskToUpdate);
         }
 
         public async Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo)

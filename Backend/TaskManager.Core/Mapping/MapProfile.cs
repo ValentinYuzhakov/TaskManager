@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos.TaskFolders;
 using TaskManager.Shared.Infos.ToDoTasks;
@@ -18,7 +19,12 @@ namespace TaskManager.Core.Mapping
                 .ForMember(t => t.EndDate, p => p.MapFrom(r => r.EndDate.ToString("f")));
 
             CreateMap<UpdateToDoTaskInfo, ToDoTask>()
-                .ForMember(t => t.Id, o => o.Ignore());
+                .BeforeMap((s, c) => s.EndDate = (s.EndDate == null) ? c.EndDate.ToString() : s.EndDate)
+                .AfterMap((s, c) => c.ModificationDate = DateTime.Now)
+                .ForMember(t => t.Id, o => o.Ignore())
+                .ForAllMembers(o => o.Condition((src, dest, member) => member is not null));
+
+
         }
     }
 }
