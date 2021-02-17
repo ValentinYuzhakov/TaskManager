@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebAPI.Controllers
+namespace TaskManager.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

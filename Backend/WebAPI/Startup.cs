@@ -16,7 +16,7 @@ using TaskManager.Data.Extensions;
 using TaskManager.Core.Mapping;
 using TaskManager.Domain.Models;
 
-namespace WebAPI
+namespace TaskManager.WebAPI
 {
     public class Startup
     {

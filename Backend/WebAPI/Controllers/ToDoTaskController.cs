@@ -6,7 +6,7 @@ using TaskManager.Core.Services.Interfaces;
 using TaskManager.Shared.Infos.ToDoTasks;
 using TaskManager.Shared.ViewModels;
 
-namespace WebAPI.Controllers
+namespace TaskManager.WebAPI.Controllers
 {
     [Route("api/ToDoTask")]
     [ApiController]
