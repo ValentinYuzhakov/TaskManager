@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TaskManager.Domain.Enums;
 
-namespace TaskManager.Shared.Infos
+namespace TaskManager.Shared.Infos.ToDoTasks
 {
     public class UpdateToDoTaskPriorityInfo
     {

@@ -21,11 +21,13 @@ namespace TaskManager.Data.Repositories
         public async Task CreateAsync(ToDoTask entity)
         {
             await context.AddAsync(entity);
+            await SaveChangesAsync();
         }
 
         public async Task DeleteAsync(ToDoTask entity)
         {
             await Task.Run(() => context.Remove(entity));
+            await SaveChangesAsync();
         }
 
         public async Task<ToDoTask> GetAsync(Guid entityId)
@@ -36,6 +38,7 @@ namespace TaskManager.Data.Repositories
         public async Task UpdateAsync(ToDoTask entity)
         {
             await Task.Run(() => context.Tasks.Update(entity));
+            await SaveChangesAsync();
         }
 
         public async Task<List<ToDoTask>> GetAllAsync()
@@ -46,6 +49,11 @@ namespace TaskManager.Data.Repositories
         public async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
+        }
+
+        public async Task<List<ToDoTask>> GetAllAsync(Func<ToDoTask, bool> func)
+        {
+            return await Task.Run(() => context.Tasks.Where(func).ToList());
         }
     }
 }

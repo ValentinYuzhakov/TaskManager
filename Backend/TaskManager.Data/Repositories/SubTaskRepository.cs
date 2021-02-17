@@ -41,5 +41,10 @@ namespace TaskManager.Data.Repositories
         {
             await context.SaveChangesAsync();
         }
+
+        public Task<System.Collections.Generic.List<SubTask>> GetAllAsync(Func<SubTask, bool> func)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

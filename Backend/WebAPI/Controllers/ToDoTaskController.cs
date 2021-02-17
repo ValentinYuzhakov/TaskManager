@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaskManager.Core.Services.Interfaces;
-using TaskManager.Shared.Infos;
+using TaskManager.Shared.Infos.ToDoTasks;
 using TaskManager.Shared.ViewModels;
 
 namespace WebAPI.Controllers

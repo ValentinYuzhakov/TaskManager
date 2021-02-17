@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TaskManager.Shared.Infos
+namespace TaskManager.Shared.Infos.TaskFolders
 {
-    public class CreateTodoTaskInfo
+    public class CreateTaskFolderInfo
     {
-        public string Title { get; set; }
         public Guid CreatorId { get; set; }
+        public string Name { get; set; }
     }
 }

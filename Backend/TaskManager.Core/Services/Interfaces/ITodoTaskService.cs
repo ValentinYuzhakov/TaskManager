@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TaskManager.Shared.Infos;
+using TaskManager.Shared.Infos.ToDoTasks;
 using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services.Interfaces

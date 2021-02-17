@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskManager.Shared.Infos
+namespace TaskManager.Shared.Infos.ToDoTasks
 {
     public class UpdateToDoTaskStatusInfo
     {

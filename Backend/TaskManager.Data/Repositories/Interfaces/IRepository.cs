@@ -11,6 +11,7 @@ namespace TaskManager.Data.Repositories.Interfaces
         Task DeleteAsync(TEntity entity);
         Task<TEntity> GetAsync(Guid entityId);
         Task UpdateAsync(TEntity entity);
+        Task<List<TEntity>> GetAllAsync(Func<TEntity, bool> func);
         Task SaveChangesAsync();
     }
 }

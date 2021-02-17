@@ -8,6 +8,5 @@ namespace TaskManager.Data.Repositories.Interfaces
 {
     public interface IToDoTaskRepository : IRepository<ToDoTask>
     {
-        Task<List<ToDoTask>> GetAllAsync();
     }
 }

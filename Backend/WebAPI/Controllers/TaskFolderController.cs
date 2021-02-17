@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/TaskFolder")]
     [ApiController]
     public class TaskFolderController : ControllerBase
     {

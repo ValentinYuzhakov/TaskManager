@@ -8,7 +8,7 @@ using TaskManager.Core.Services.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Enums;
 using TaskManager.Domain.Models;
-using TaskManager.Shared.Infos;
+using TaskManager.Shared.Infos.ToDoTasks;
 using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services
@@ -33,7 +33,6 @@ namespace TaskManager.Core.Services
         {
             var task = mapper.Map<ToDoTask>(taskInfo);
             await repository.CreateAsync(task);
-            await repository.SaveChangesAsync();
         }
 
         public async Task<ToDoTaskView> GetById(Guid taskId)
@@ -45,9 +44,8 @@ namespace TaskManager.Core.Services
 
         public async Task<List<ToDoTaskView>> GetTasksByUser(Guid userId)
         {
-            var tasks = await repository.GetAllAsync();
-            var userTasks = tasks.Where(t => t.CreatorId == userId).ToList();
-            return mapper.Map<List<ToDoTaskView>>(userTasks);
+            var tasks = await repository.GetAllAsync(t => t.CreatorId == userId);
+            return mapper.Map<List<ToDoTaskView>>(tasks);
         }
 
         public async Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo)
@@ -65,7 +63,6 @@ namespace TaskManager.Core.Services
             }
 
             await repository.UpdateAsync(taskToUpdate);
-            await repository.SaveChangesAsync();
         }
 
         public async Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo)
@@ -74,7 +71,6 @@ namespace TaskManager.Core.Services
             task.TaskPriority = Enum.Parse<TaskPriority>(taskInfo.TaskPriority);
 
             await repository.UpdateAsync(task);
-            await repository.SaveChangesAsync();
         }
 
         public async Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo)
@@ -83,33 +79,29 @@ namespace TaskManager.Core.Services
             task.TaskStatus = Enum.Parse<TaskManager.Domain.Enums.TaskStatus>(taskInfo.TaskStatus);
 
             await repository.UpdateAsync(task);
-            await repository.SaveChangesAsync();
         }
 
         public async Task<List<ToDoTaskView>> GetDoneTasks(Guid userId)
         {
-            var tasks = await repository.GetAllAsync();
-            var userDoneTasks = tasks.Where(t => t.CreatorId == userId &&
+            var tasks = await repository.GetAllAsync(t => t.CreatorId == userId &&
                 t.TaskStatus == Domain.Enums.TaskStatus.Done);
 
-            return mapper.Map<List<ToDoTaskView>>(userDoneTasks);
+            return mapper.Map<List<ToDoTaskView>>(tasks);
         }
 
         public async Task<List<ToDoTaskView>> GetImportantTasks(Guid userId)
         {
-            var tasks = await repository.GetAllAsync();
-            var userImportantTasks = tasks.Where(t => t.CreatorId == userId &&
-                t.TaskPriority == TaskPriority.Highest || t.TaskPriority == TaskPriority.High).OrderByDescending(t => t.TaskPriority);
+            var tasks = (await repository.GetAllAsync(t => t.CreatorId == userId &&
+                t.TaskPriority == TaskPriority.Highest || t.TaskPriority == TaskPriority.High)).OrderByDescending(t => t.TaskPriority);
 
-            return mapper.Map<List<ToDoTaskView>>(userImportantTasks);
+            return mapper.Map<List<ToDoTaskView>>(tasks);
         }
 
         public async Task<List<ToDoTaskView>> GetDailyTasks(Guid userId)
         {
-            var tasks = await repository.GetAllAsync();
-            var dailyTasks = tasks.Where(t => t.CreatorId == userId && t.Folders.Any(f => f.TaskFolder.FolderType == FolderType.Today));
+            var tasks = await repository.GetAllAsync(t => t.CreatorId == userId && t.Folders.Any(f => f.TaskFolder.FolderType == FolderType.Today));
 
-            return mapper.Map<List<ToDoTaskView>>(dailyTasks);
+            return mapper.Map<List<ToDoTaskView>>(tasks);
         }
     }
 }
