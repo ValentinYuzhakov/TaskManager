@@ -35,14 +35,11 @@ namespace TaskManager.Data.Repositories.Abstracts
             await SaveChangesAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression, string unclude = null)
+        public async Task DeleteAllAsync(IEnumerable<Guid> entityIds)
         {
-            return await dbSet.Where(expression).ToListAsync();
-        }
-
-        public async Task<TEntity> GetAsync(Guid entityId)
-        {
-            return await dbSet.FindAsync(entityId);
+            var entities = await GetQuery().Where(e => entityIds.Contains(e.Id)).ToListAsync();
+            dbSet.RemoveRange(entities);
+            await SaveChangesAsync();
         }
 
         public async Task UpdateAsync(TEntity entity)
@@ -51,9 +48,46 @@ namespace TaskManager.Data.Repositories.Abstracts
             await SaveChangesAsync();
         }
 
+        public async Task<TEntity> GetAsync(Guid id, string include = null)
+        {
+            return await GetQuery(include).Where(entity => entity.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, string include = null)
+        {
+            return await GetQuery(include).Where(expression).FirstOrDefaultAsync();
+        }
+
+        public async Task<IReadOnlyList<TEntity>> GetAllAsync(string include)
+        {
+            return await GetQuery(include).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression, string include = null)
+        {
+            return await GetQuery(include).Where(expression).ToListAsync();
+        }
+
         public async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
+        }
+
+        private IQueryable<TEntity> GetQuery(string include = null)
+        {
+            var query = dbSet.AsQueryable();
+
+            if (!string.IsNullOrEmpty(include))
+            {
+                var includes = include.Split('.');
+
+                foreach (var stringInclude in includes)
+                {
+                    query = query.Include(stringInclude);
+                }
+            }
+
+            return query;
         }
     }
 }
