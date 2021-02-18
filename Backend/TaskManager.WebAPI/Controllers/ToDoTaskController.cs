@@ -1,21 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaskManager.Core.Services.Interfaces;
+using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos.ToDoTasks;
+using TaskManager.Shared.ShortViewModels;
 using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.WebAPI.Controllers
 {
     [Route("api/ToDoTask")]
     [ApiController]
-    public class ToDoTaskController : ControllerBase
+    public class ToDoTaskController : SystemController
     {
         private readonly ITodoTaskService taskService;
 
 
-        public ToDoTaskController(ITodoTaskService taskService)
+        public ToDoTaskController(ITodoTaskService taskService, UserManager<User> userManager) : base(userManager)
         {
             this.taskService = taskService;
         }
@@ -28,13 +31,20 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("{taskId}")]
+        [HttpDelete("{taskId:guid}")]
+        public async Task<IActionResult> DeleteToDoTask(Guid taskId)
+        {
+            await taskService.DeleteToDoTask(taskId);
+            return Ok();
+        }
+
+        [HttpGet("{taskId:guid}")]
         public async Task<ToDoTaskView> GetTask(Guid taskId)
         {
             return await taskService.GetById(taskId);
         }
 
-        [HttpGet("all/{userId}")]
+        [HttpGet("all/{userId:guid}")]
         public async Task<List<ToDoTaskView>> GetTasksByUser(Guid userId)
         {
             return await taskService.GetTasksByUser(userId);
@@ -61,13 +71,13 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("done/{userId}")]
+        [HttpGet("done/{userId:guid}")]
         public async Task<List<ToDoTaskView>> GetDoneTasks(Guid userId)
         {
             return await taskService.GetDoneTasks(userId);
         }
 
-        [HttpGet("important/{userId}")]
+        [HttpGet("important/{userId:guid}")]
         public async Task<List<ToDoTaskView>> GetImportantTasks(Guid userId)
         {
             return await taskService.GetImportantTasks(userId);
@@ -77,6 +87,19 @@ namespace TaskManager.WebAPI.Controllers
         public async Task<List<ToDoTaskView>> GetDailyTasks(Guid userId)
         {
             return await taskService.GetDailyTasks(userId);
+        }
+
+        [HttpPut("move/{folderId:guid}/{taskId:guid}")]
+        public async Task<IActionResult> MoveTaskToFolder(Guid folderId, Guid taskId)
+        {
+            await taskService.MoveTaskToFolder(taskId, folderId);
+            return Ok();
+        }
+
+        [HttpGet("{folderId:guid}/{userId:guid}")]
+        public async Task<List<ToDoTaskShortView>> GetTasksByFolder(Guid folderId, Guid userId)
+        {
+            return await taskService.GetUserTasksByFolder(folderId, userId);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Enums;
+using TaskManager.Domain.JoinTables;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos.ToDoTasks;
 using TaskManager.Shared.ShortViewModels;
@@ -17,19 +18,39 @@ namespace TaskManager.Core.Services
     {
         private readonly IMapper mapper;
         private readonly IToDoTaskRepository repository;
+        private readonly ITaskFolderService taskFolderService;
 
 
-        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper)
+        public ToDoTaskService(IToDoTaskRepository repository, IMapper mapper,
+            ITaskFolderService taskFolderService)
         {
             this.repository = repository;
             this.mapper = mapper;
+            this.taskFolderService = taskFolderService;
         }
 
 
         public async Task CreateToDoTask(CreateTodoTaskInfo taskInfo)
         {
             var task = mapper.Map<ToDoTask>(taskInfo);
+
+            if (taskInfo.FolderId.HasValue)
+            {
+                var folder = await taskFolderService.GetFolderById(taskInfo.FolderId.Value);
+
+                task.Folders.Add(new TaskFolderTodoTask
+                {
+                    TaskFolderId = taskInfo.FolderId.Value,
+                    TaskFolder = folder
+                });
+            }
+
             await repository.CreateAsync(task);
+        }
+
+        public async Task DeleteToDoTask(Guid taskId)
+        {
+            await repository.DeleteAsync(taskId);
         }
 
         public async Task<ToDoTaskView> GetById(Guid taskId)
@@ -91,9 +112,9 @@ namespace TaskManager.Core.Services
             return mapper.Map<List<ToDoTaskView>>(tasks);
         }
 
-        public async Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId)
+        public async Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId, Guid userId)
         {
-            var tasks = await repository.GetAllAsync(t => t.Folders.Any(f => f.TaskFolderId == folderId));
+            var tasks = await repository.GetAllAsync(t => t.Folders.Any(f => f.TaskFolderId == folderId) && t.CreatorId == userId);
             return mapper.Map<List<ToDoTaskShortView>>(tasks);
         }
 

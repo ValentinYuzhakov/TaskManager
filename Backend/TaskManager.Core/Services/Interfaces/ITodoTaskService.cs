@@ -11,6 +11,7 @@ namespace TaskManager.Core.Services.Interfaces
     {
         Task CreateToDoTask(CreateTodoTaskInfo taskInfo);
         Task<ToDoTaskView> GetById(Guid taskId);
+        Task DeleteToDoTask(Guid taskId);
         Task<List<ToDoTaskView>> GetTasksByUser(Guid userId);
         Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo);
         Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo);
@@ -18,7 +19,7 @@ namespace TaskManager.Core.Services.Interfaces
         Task<List<ToDoTaskView>> GetDoneTasks(Guid userId);
         Task<List<ToDoTaskView>> GetImportantTasks(Guid userId);
         Task<List<ToDoTaskView>> GetDailyTasks(Guid userId);
-        Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId);
+        Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId, Guid userId);
         Task MoveTaskToFolder(Guid taskId, Guid folderId);
     }
 }

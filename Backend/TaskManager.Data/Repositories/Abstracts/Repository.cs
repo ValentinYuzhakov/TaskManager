@@ -35,6 +35,12 @@ namespace TaskManager.Data.Repositories.Abstracts
             await SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(Guid entityId)
+        {
+            var task = await GetQuery().Where(e => e.Id == entityId).FirstOrDefaultAsync();
+            await DeleteAsync(task);
+        }
+
         public async Task DeleteAllAsync(IEnumerable<Guid> entityIds)
         {
             var entities = await GetQuery().Where(e => entityIds.Contains(e.Id)).ToListAsync();
@@ -89,5 +95,6 @@ namespace TaskManager.Data.Repositories.Abstracts
 
             return query;
         }
+
     }
 }

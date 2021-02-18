@@ -10,6 +10,7 @@ namespace TaskManager.Data.Repositories.Interfaces
     {
         Task CreateAsync(TEntity entity);
         Task DeleteAsync(TEntity entity);
+        Task DeleteAsync(Guid entityId);
         Task DeleteAllAsync(IEnumerable<Guid> entityIds);
         Task UpdateAsync(TEntity entity);
         Task<TEntity> GetAsync(Guid id, string include = null);

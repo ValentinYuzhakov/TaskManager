@@ -48,5 +48,10 @@ namespace TaskManager.Core.Services
             var taskFolders = await taskFolderRepository.GetAllAsync(u => u.CreatorId == userId);
             return mapper.Map<List<TaskFolderView>>(taskFolders);
         }
+
+        public async Task<TaskFolder> GetFolderById(Guid folderId)
+        {
+            return await taskFolderRepository.GetAsync(folderId);
+        }
     }
 }
