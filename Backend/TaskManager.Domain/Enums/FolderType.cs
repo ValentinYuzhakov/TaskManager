@@ -7,6 +7,6 @@ namespace TaskManager.Domain.Enums
         Planned,
         Important,
         Tasks,
-        Today,
+        MyDay,
     }
 }

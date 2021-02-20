@@ -107,7 +107,7 @@ namespace TaskManager.Core.Services
 
         public async Task<List<ToDoTaskView>> GetDailyTasks(Guid userId)
         {
-            var tasks = await repository.GetAllAsync(t => t.CreatorId == userId && t.Folders.Any(f => f.TaskFolder.FolderType == FolderType.Today));
+            var tasks = await repository.GetAllAsync(t => t.CreatorId == userId && t.Folders.Any(f => f.TaskFolder.FolderType == FolderType.MyDay));
 
             return mapper.Map<List<ToDoTaskView>>(tasks);
         }
