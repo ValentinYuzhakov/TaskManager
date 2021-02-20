@@ -6,6 +6,7 @@ using TaskManager.Core.Services.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos.TaskFolders;
+using TaskManager.Shared.ShortViewModels;
 using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services
@@ -43,10 +44,10 @@ namespace TaskManager.Core.Services
             await taskFolderRepository.DeleteAsync(folder);
         }
 
-        public async Task<List<TaskFolderView>> GetFoldersByUser(Guid userId)
+        public async Task<List<TaskFolderShortView>> GetFoldersByUser(Guid userId)
         {
             var taskFolders = await taskFolderRepository.GetAllAsync(u => u.CreatorId == userId);
-            return mapper.Map<List<TaskFolderView>>(taskFolders);
+            return mapper.Map<List<TaskFolderShortView>>(taskFolders);
         }
 
         public async Task<TaskFolder> GetFolderById(Guid folderId)

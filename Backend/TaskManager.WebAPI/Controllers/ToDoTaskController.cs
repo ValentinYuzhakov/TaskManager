@@ -18,7 +18,8 @@ namespace TaskManager.WebAPI.Controllers
         private readonly ITodoTaskService taskService;
 
 
-        public ToDoTaskController(ITodoTaskService taskService, UserManager<User> userManager) : base(userManager)
+        public ToDoTaskController(ITodoTaskService taskService,
+            UserManager<User> userManager) : base(userManager)
         {
             this.taskService = taskService;
         }

@@ -8,11 +8,11 @@ namespace TaskManager.WebAPI.Controllers
 {
     public class SystemController : ControllerBase
     {
-        protected Guid CurrentUserId { get; }
+        protected Guid? CurrentUserId { get; }
 
         public SystemController(UserManager<User> userManager)
         {
-            CurrentUserId = userManager.GetUserAsync(HttpContext.User).Result.Id;
+           // CurrentUserId = userManager.GetUserAsync(HttpContext?.User).Result?.Id;
         }
     }
 }
