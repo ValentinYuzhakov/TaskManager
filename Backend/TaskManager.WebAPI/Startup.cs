@@ -27,21 +27,10 @@ namespace TaskManager.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TaskManagerLocalDB"),
-                b => b.MigrationsAssembly("TaskManager.Data")));
-
-
-
-            services.AddIdentity<User, Role>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredUniqueChars = 0;
-                options.User.RequireUniqueEmail = true;
-            })
-            .AddEntityFrameworkStores<DatabaseContext>();
-
+            services.AddCustomDbContext<DatabaseContext>(Configuration);
+            services.AddCustomIdentity<User, Role>()
+                .AddRoles<Role>()
+                .AddEntityFrameworkStores<DatabaseContext>();
 
             services.Configure<AdminOptions>(Configuration.GetSection(nameof(AdminOptions)));
             services.Configure<RolesOptions>(Configuration.GetSection(nameof(RolesOptions)));
@@ -50,6 +39,8 @@ namespace TaskManager.WebAPI
             services.AddServices();
             services.AddRepositories();
             services.AddControllers();
+            services.AddAuthentication();
+            services.AddAuthorization();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,6 +51,10 @@ namespace TaskManager.WebAPI
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
