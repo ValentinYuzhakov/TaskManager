@@ -1,7 +1,7 @@
 ﻿
 namespace TaskManager.Domain.Enums
 {
-    public enum TaskStatus : byte
+    public enum ToDoTaskStatus : byte
     {
         InProgress,
         Done

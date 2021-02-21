@@ -10,8 +10,8 @@ using TaskManager.Shared.ShortViewModels;
 
 namespace TaskManager.WebAPI.Controllers
 {
-    [Route("api/TaskFolder")]
     [ApiController]
+    [Route("api/TaskFolder")]
     public class TaskFolderController : SystemController
     {
         private readonly ITaskFolderService taskFolderService;

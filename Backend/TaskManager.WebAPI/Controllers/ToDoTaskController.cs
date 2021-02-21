@@ -11,8 +11,8 @@ using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.WebAPI.Controllers
 {
-    [Route("api/ToDoTask")]
     [ApiController]
+    [Route("api/ToDoTask")]
     public class ToDoTaskController : SystemController
     {
         private readonly ITodoTaskService toDoTaskService;
@@ -58,14 +58,14 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("update/priority")]
+        [HttpPut("update-priority")]
         public async Task<IActionResult> UpdateTaskPriority([FromBody] UpdateToDoTaskPriorityInfo request)
         {
             await toDoTaskService.UpdatePriority(request);
             return Ok();
         }
 
-        [HttpPut("update/status")]
+        [HttpPut("update-status")]
         public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateToDoTaskStatusInfo request)
         {
             await toDoTaskService.UpdateStatus(request);

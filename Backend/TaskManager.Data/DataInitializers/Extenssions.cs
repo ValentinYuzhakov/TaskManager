@@ -9,10 +9,8 @@ namespace TaskManager.Data.DataInitializers
     {
         public static async Task<IHost> InitializeDatabase(this IHost host)
         {
-            using (var scope = host.Services.CreateScope())
-            {
-                await scope.ServiceProvider.GetRequiredService<IDataInitializer>().Initialize();
-            }
+            using var scope = host.Services.CreateScope();
+            await scope.ServiceProvider.GetRequiredService<IDataInitializer>().Initialize();
 
             return host;
         }

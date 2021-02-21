@@ -94,7 +94,7 @@ namespace TaskManager.Core.Services
         public async Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo)
         {
             var task = await toDoTaskrepository.GetAsync(taskInfo.Id);
-            task.TaskStatus = Enum.Parse<TaskManager.Domain.Enums.TaskStatus>(taskInfo.TaskStatus);
+            task.TaskStatus = Enum.Parse<ToDoTaskStatus>(taskInfo.TaskStatus);
 
             await toDoTaskrepository.UpdateAsync(task);
         }
@@ -102,7 +102,7 @@ namespace TaskManager.Core.Services
         public async Task<List<ToDoTaskShortView>> GetDoneTasks(Guid userId)
         {
             var tasks = await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId &&
-                t.TaskStatus == Domain.Enums.TaskStatus.Done);
+                t.TaskStatus == Domain.Enums.ToDoTaskStatus.Done);
 
             return mapper.Map<List<ToDoTaskShortView>>(tasks);
         }

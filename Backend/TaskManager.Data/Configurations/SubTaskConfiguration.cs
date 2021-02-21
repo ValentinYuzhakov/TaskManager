@@ -11,7 +11,7 @@ namespace TaskManager.Data.Configurations
         {
             builder
                 .Property(t => t.TaskStatus)
-                .HasDefaultValue(TaskStatus.InProgress);
+                .HasDefaultValue(ToDoTaskStatus.InProgress);
 
             builder
                 .Property(t => t.CreationDate)
