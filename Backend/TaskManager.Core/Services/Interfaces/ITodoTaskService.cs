@@ -9,17 +9,18 @@ namespace TaskManager.Core.Services.Interfaces
 {
     public interface ITodoTaskService
     {
-        Task CreateToDoTask(CreateTodoTaskInfo taskInfo);
+        Task Create(CreateTodoTaskInfo taskInfo);
         Task<ToDoTaskView> GetById(Guid taskId);
-        Task DeleteToDoTask(Guid taskId);
-        Task<List<ToDoTaskView>> GetTasksByUser(Guid userId);
-        Task UpdateToDoTask(UpdateToDoTaskInfo taskinfo);
+        Task Delete(Guid taskId);
+        Task<List<ToDoTaskShortView>> GetAllByUser(Guid userId);
+        Task Update(UpdateToDoTaskInfo taskinfo);
         Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo);
         Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo);
-        Task<List<ToDoTaskView>> GetDoneTasks(Guid userId);
-        Task<List<ToDoTaskView>> GetImportantTasks(Guid userId);
-        Task<List<ToDoTaskView>> GetDailyTasks(Guid userId);
+        Task<List<ToDoTaskShortView>> GetDoneTasks(Guid userId);
+        Task<List<ToDoTaskShortView>> GetImportantTasks(Guid userId);
+        Task<List<ToDoTaskShortView>> GetDailyTasks(Guid userId);
         Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId, Guid userId);
-        Task MoveTaskToFolder(Guid taskId, Guid folderId);
+        Task MoveToFolder(Guid taskId, Guid folderId);
+        Task<List<ToDoTaskShortView>> GetPlannedTasks(Guid userId);
     }
 }

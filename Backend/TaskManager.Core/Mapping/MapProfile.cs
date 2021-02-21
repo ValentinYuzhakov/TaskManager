@@ -15,8 +15,8 @@ namespace TaskManager.Core.Mapping
             CreateMap<CreateTaskFolderInfo, TaskFolder>();
             CreateMap<ToDoTask, ToDoTaskView>()
                 .ForMember(t => t.CreationDate, p => p.MapFrom(r => r.CreationDate.ToString("f")))
-                .ForMember(t => t.ModificationDate, p => p.MapFrom(r => r.ModificationDate.ToString("f")))
-                .ForMember(t => t.EndDate, p => p.MapFrom(r => r.EndDate.ToString("f")));
+                .ForMember(t => t.ModificationDate, p => p.MapFrom(r => r.ModificationDate.Value.ToString("f")))
+                .ForMember(t => t.EndDate, p => p.MapFrom(r => r.EndDate.Value.ToString("f")));
 
             CreateMap<UpdateToDoTaskInfo, ToDoTask>()
                 .BeforeMap((s, c) => s.EndDate = (s.EndDate == null) ? c.EndDate.ToString() : s.EndDate)
@@ -26,7 +26,6 @@ namespace TaskManager.Core.Mapping
 
             CreateMap<CreateTaskFolderInfo, TaskFolder>();
             CreateMap<TaskFolder, TaskFolderView>();
-
         }
     }
 }

@@ -11,8 +11,8 @@ namespace TaskManager.Domain.Models
         public string Title { get; set; }
         public string Comment { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime ModificationDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public TaskPriority TaskPriority { get; set; }
         public TaskStatus TaskStatus { get; set; }
         public Guid CreatorId { get; set; }

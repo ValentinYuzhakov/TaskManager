@@ -27,28 +27,28 @@ namespace TaskManager.WebAPI.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateFolder([FromBody] CreateTaskFolderInfo request)
         {
-            await taskFolderService.CreateFolder(request);
+            await taskFolderService.Create(request);
             return Ok();
         }
 
         [HttpPut("update")]
         public async Task<IActionResult> UpdateFolder([FromBody] UpdateTaskFolderInfo request)
         {
-            await taskFolderService.UpdateFolder(request);
+            await taskFolderService.Update(request);
             return Ok();
         }
 
         [HttpDelete("delete/{folderId:guid}")]
         public async Task<IActionResult> DeleteFolder(Guid folderId)
         {
-            await taskFolderService.DeleteFolder(folderId);
+            await taskFolderService.Delete(folderId);
             return Ok();
         }
 
         [HttpGet("{userId:guid}")]
         public async Task<List<TaskFolderShortView>> GetFoldersByUser(Guid userId)
         {
-            return await taskFolderService.GetFoldersByUser(userId);
+            return await taskFolderService.GetByUser(userId);
         }
     }
 }
