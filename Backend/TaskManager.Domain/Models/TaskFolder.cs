@@ -11,7 +11,7 @@ namespace TaskManager.Domain.Models
         public string Name { get; set; }
         public Guid? CreatorId { get; set; }
         public User Creator { get; set; }
-        public FolderType FolderType { get; set; }
+        public FolderType Type { get; set; }
         public IList<TaskFolderTodoTask> TasksInFolder { get; set; } = new List<TaskFolderTodoTask>();
     }
 }

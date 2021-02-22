@@ -10,7 +10,7 @@ namespace TaskManager.Core.Services.Interfaces
 {
     public interface ITaskFolderService
     {
-        Task Create(CreateTaskFolderInfo info);
+        Task<Guid> Create(CreateTaskFolderInfo info);
         Task Update(UpdateTaskFolderInfo info);
         Task Delete(Guid folderId);
         Task<List<TaskFolderShortView>> GetByUser(Guid userId);

@@ -25,10 +25,11 @@ namespace TaskManager.Core.Services
         }
 
 
-        public async Task Create(CreateTaskFolderInfo info)
+        public async Task<Guid> Create(CreateTaskFolderInfo info)
         {
             var taskFolder = mapper.Map<TaskFolder>(info);
             await taskFolderRepository.CreateAsync(taskFolder);
+            return taskFolder.Id;
         }
 
         public async Task Update(UpdateTaskFolderInfo info)
@@ -57,7 +58,7 @@ namespace TaskManager.Core.Services
 
         public async Task<TaskFolder> GetSystemFolder(FolderType folderType)
         {
-            return await taskFolderRepository.GetAsync(f => f.FolderType == folderType);
+            return await taskFolderRepository.GetAsync(f => f.Type == folderType);
         }
     }
 }

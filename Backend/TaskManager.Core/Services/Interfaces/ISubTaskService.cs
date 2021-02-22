@@ -6,7 +6,7 @@ namespace TaskManager.Core.Services.Interfaces
 {
     public interface ISubTaskService
     {
-        Task Create(SubTaskCreateInfo info);
+        Task<Guid> Create(SubTaskCreateInfo info);
         Task Delete(Guid subTaskId);
         Task Update(UpdateSubTaskInfo info);
         Task UpdateStatus(UpdateSubTaskStatusInfo info);

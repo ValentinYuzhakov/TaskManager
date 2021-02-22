@@ -11,11 +11,11 @@ namespace TaskManager.Data.Configurations
         public void Configure(EntityTypeBuilder<ToDoTask> builder)
         {
             builder
-                .Property(t => t.TaskPriority)
-                .HasDefaultValue(TaskPriority.None);
+                .Property(t => t.Priority)
+                .HasDefaultValue(ToDoTaskPriority.None);
 
             builder
-                .Property(t => t.TaskStatus)
+                .Property(t => t.Status)
                 .HasDefaultValue(ToDoTaskStatus.InProgress);
 
             builder

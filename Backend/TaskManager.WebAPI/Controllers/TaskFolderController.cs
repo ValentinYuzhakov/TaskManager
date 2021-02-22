@@ -27,8 +27,8 @@ namespace TaskManager.WebAPI.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateFolder([FromBody] CreateTaskFolderInfo request)
         {
-            await taskFolderService.Create(request);
-            return Ok();
+            var folderId = await taskFolderService.Create(request);
+            return Ok(folderId);
         }
 
         [HttpPut("update")]

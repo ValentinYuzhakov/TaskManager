@@ -10,7 +10,7 @@ namespace TaskManager.Data.Configurations
         public void Configure(EntityTypeBuilder<SubTask> builder)
         {
             builder
-                .Property(t => t.TaskStatus)
+                .Property(t => t.Status)
                 .HasDefaultValue(ToDoTaskStatus.InProgress);
 
             builder

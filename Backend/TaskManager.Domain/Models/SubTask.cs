@@ -9,7 +9,7 @@ namespace TaskManager.Domain.Models
         public string Title { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime EndDate { get; set; }
-        public ToDoTaskStatus TaskStatus { get; set; }
+        public ToDoTaskStatus Status { get; set; }
         public Guid ToDoTaskId { get; set; }
         public ToDoTask ToDoTask { get; set; }
     }

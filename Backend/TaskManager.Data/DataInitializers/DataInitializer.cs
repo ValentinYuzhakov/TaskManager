@@ -73,10 +73,10 @@ namespace TaskManager.Data.DataInitializers
         private async Task CreateSystemFolders()
         {
 
-            var folders = await taskFolderRepository.GetAllAsync(f => f.FolderType == FolderType.Important ||
-                                                                     f.FolderType == FolderType.MyDay ||
-                                                                     f.FolderType == FolderType.Planned ||
-                                                                     f.FolderType == FolderType.Tasks);
+            var folders = await taskFolderRepository.GetAllAsync(f => f.Type == FolderType.Important ||
+                                                                     f.Type == FolderType.MyDay ||
+                                                                     f.Type == FolderType.Planned ||
+                                                                     f.Type == FolderType.Tasks);
             if (folders.Count == 0)
             {
                 List<TaskFolder> taskFolders = new()
@@ -84,22 +84,22 @@ namespace TaskManager.Data.DataInitializers
                     new TaskFolder
                     {
                         Name = "Мой день",
-                        FolderType = FolderType.MyDay,
+                        Type = FolderType.MyDay,
                     },
                     new TaskFolder
                     {
                         Name = "Задачи",
-                        FolderType = FolderType.Tasks,
+                        Type = FolderType.Tasks,
                     },
                     new TaskFolder
                     {
                         Name = "Запланированные",
-                        FolderType = FolderType.Planned,
+                        Type = FolderType.Planned,
                     },
                     new TaskFolder
                     {
                         Name = "Важные",
-                        FolderType = FolderType.Important,
+                        Type = FolderType.Important,
                     }
                 };
 

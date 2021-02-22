@@ -22,8 +22,8 @@ namespace TaskManager.WebAPI.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateSubTask([FromBody] SubTaskCreateInfo request)
         {
-            await subTaskService.Create(request);
-            return Ok();
+            var subTaskId = await subTaskService.Create(request);
+            return Ok(subTaskId);
         }
 
         [HttpDelete("delete/{subTaskId:guid}")]

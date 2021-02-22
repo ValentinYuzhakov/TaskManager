@@ -23,10 +23,11 @@ namespace TaskManager.Core.Services
         }
 
 
-        public async Task Create(SubTaskCreateInfo info)
+        public async Task<Guid> Create(SubTaskCreateInfo info)
         {
             var subTask = mapper.Map<SubTask>(info);
             await subTaskRepository.CreateAsync(subTask);
+            return subTask.Id;
         }
 
         public async Task Delete(Guid subTaskId)
@@ -44,7 +45,7 @@ namespace TaskManager.Core.Services
         public async Task UpdateStatus(UpdateSubTaskStatusInfo info)
         {
             var subTask = await subTaskRepository.GetAsync(info.SubTaskId);
-            subTask.TaskStatus = Enum.Parse<ToDoTaskStatus>(info.SubTaskStatus);
+            subTask.Status = Enum.Parse<ToDoTaskStatus>(info.SubTaskStatus);
             await subTaskRepository.UpdateAsync(subTask);
         }
     }

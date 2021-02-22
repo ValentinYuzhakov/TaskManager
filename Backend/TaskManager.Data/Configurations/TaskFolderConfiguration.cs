@@ -10,7 +10,7 @@ namespace TaskManager.Data.Configurations
         public void Configure(EntityTypeBuilder<TaskFolder> builder)
         {
             builder
-                .Property(p => p.FolderType)
+                .Property(p => p.Type)
                 .HasDefaultValue(FolderType.Default);
         }
     }

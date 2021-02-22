@@ -1,7 +1,7 @@
 ﻿
 namespace TaskManager.Domain.Enums
 {
-    public enum TaskPriority : byte
+    public enum ToDoTaskPriority : byte
     {
         None,
         Low,

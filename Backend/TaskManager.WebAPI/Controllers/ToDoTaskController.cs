@@ -28,8 +28,8 @@ namespace TaskManager.WebAPI.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateToDoTask([FromBody] CreateTodoTaskInfo request)
         {
-            await toDoTaskService.Create(request);
-            return Ok();
+            var taskId = await toDoTaskService.Create(request);
+            return Ok(taskId);
         }
 
         [HttpDelete("{taskId:guid}")]

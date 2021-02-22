@@ -13,8 +13,8 @@ namespace TaskManager.Domain.Models
         public DateTime CreationDate { get; set; }
         public DateTime? ModificationDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public TaskPriority TaskPriority { get; set; }
-        public ToDoTaskStatus TaskStatus { get; set; }
+        public ToDoTaskPriority Priority { get; set; }
+        public ToDoTaskStatus Status { get; set; }
         public Guid CreatorId { get; set; }
         public User Creator { get; set; }
         public IList<SubTask> SubTasks { get; set; } = new List<SubTask>();
