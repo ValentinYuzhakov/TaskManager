@@ -10,7 +10,7 @@ namespace TaskManager.Shared.ViewModels
         public string CreationDate { get; set; }
         public string ModificationDate { get; set; }
         public string EndDate { get; set; }
-        public string TaskPriority { get; set; }
-        public string TaskStatus { get; set; }
+        public string Priority { get; set; }
+        public string Status { get; set; }
     }
 }

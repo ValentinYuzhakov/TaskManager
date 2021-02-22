@@ -20,7 +20,7 @@ namespace TaskManager.Data.Configurations
 
             builder
                 .Property(t => t.CreationDate)
-                .HasDefaultValue(DateTime.Now);
+                .HasDefaultValueSql("getdate()");
         }
     }
 }

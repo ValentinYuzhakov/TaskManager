@@ -59,6 +59,8 @@ namespace TaskManager.Core.Services
             return task.Id;
         }
 
+
+        //TODO не удаляет сроки задачи.
         public async Task Update(UpdateToDoTaskInfo taskinfo)
         {
             var taskToUpdate = await toDoTaskrepository.GetAsync(taskinfo.Id);
@@ -73,7 +75,9 @@ namespace TaskManager.Core.Services
 
         public async Task<ToDoTaskView> GetById(Guid taskId)
         {
-            var task = await toDoTaskrepository.GetAsync(taskId);
+            var include = $"{nameof(ToDoTask.Folders)},{nameof(ToDoTask.Folders)}.{nameof(TaskFolderTodoTask.TaskFolder)}";
+
+            var task = await toDoTaskrepository.GetAsync(taskId, include);
             var taskView = mapper.Map<ToDoTaskView>(task);
             return taskView;
         }

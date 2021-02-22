@@ -35,21 +35,16 @@ namespace TaskManager.Data.DataInitializers
 
         public async Task Initialize()
         {
-            await CreateAdminWithRoles();
+            await CreateRoles();
+            await CreateAdmin();
             await CreateSystemFolders();
+            await LinkSystemFoldersWithAdmin();
         }
 
-        private async Task CreateAdminWithRoles()
+        private async Task CreateAdmin()
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
             var user = await userManager.FindByEmailAsync(adminOptions.Email);
-            var rolesExist = await roleManager.RoleExistsAsync("Admin") && await roleManager.RoleExistsAsync("User");
-
-            if (!rolesExist)
-            {
-                rolesOptions.Roles.ForEach(async r => await roleManager.CreateAsync(r));
-            }
 
             if (user is null)
             {
@@ -70,13 +65,25 @@ namespace TaskManager.Data.DataInitializers
             }
         }
 
+        private async Task CreateRoles()
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
+            rolesOptions.Roles.ForEach(async role =>
+            {
+                if (await roleManager.RoleExistsAsync(role.Name))
+                {
+                    return;
+                }
+                await roleManager.CreateAsync(role);
+            });
+        }
+
         private async Task CreateSystemFolders()
         {
-
             var folders = await taskFolderRepository.GetAllAsync(f => f.Type == FolderType.Important ||
-                                                                     f.Type == FolderType.MyDay ||
-                                                                     f.Type == FolderType.Planned ||
-                                                                     f.Type == FolderType.Tasks);
+                                                                      f.Type == FolderType.MyDay ||
+                                                                      f.Type == FolderType.Planned ||
+                                                                      f.Type == FolderType.Tasks);
             if (folders.Count == 0)
             {
                 List<TaskFolder> taskFolders = new()
@@ -105,6 +112,11 @@ namespace TaskManager.Data.DataInitializers
 
                 await taskFolderRepository.CreateRangeAsync(taskFolders);
             }
+        }
+
+        private async Task LinkSystemFoldersWithAdmin()
+        {
+
         }
     }
 }

@@ -17,8 +17,10 @@ namespace TaskManager.Core.Mapping
             CreateMap<CreateTodoTaskInfo, ToDoTask>();
             CreateMap<ToDoTask, ToDoTaskView>()
                 .ForMember(t => t.CreationDate, p => p.MapFrom(r => r.CreationDate.ToString("f")))
-                .ForMember(t => t.ModificationDate, p => p.MapFrom(r => r.ModificationDate.Value.ToString("f")))
-                .ForMember(t => t.EndDate, p => p.MapFrom(r => r.EndDate.Value.ToString("f")));
+                .ForMember(t => t.ModificationDate, p => p.MapFrom(r =>
+                    r.ModificationDate.HasValue ? r.ModificationDate.Value.ToString("f") : null))
+                .ForMember(t => t.EndDate, p => p.MapFrom(r =>
+                    r.EndDate.HasValue ? r.EndDate.Value.ToString("f") : null));
 
             CreateMap<UpdateToDoTaskInfo, ToDoTask>()
                 .BeforeMap((s, c) => s.EndDate = s.EndDate ?? c.EndDate.ToString())

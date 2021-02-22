@@ -85,7 +85,7 @@ namespace TaskManager.Data.Repositories.Abstracts
 
             if (!string.IsNullOrEmpty(include))
             {
-                var includes = include.Split('.');
+                var includes = include.Split(',');
 
                 foreach (var stringInclude in includes)
                 {

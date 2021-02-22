@@ -11,7 +11,7 @@ namespace TaskManager.Shared.ShortViewModels
     {
         public string Title { get; set; }
         public string EndDate { get; set; }
-        public string TaskPriority { get; set; }
-        public string TaskStatus { get; set; }
+        public string Priority { get; set; }
+        public string Status { get; set; }
     }
 }
