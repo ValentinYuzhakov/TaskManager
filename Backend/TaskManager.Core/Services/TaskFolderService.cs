@@ -45,7 +45,7 @@ namespace TaskManager.Core.Services
             await taskFolderRepository.DeleteAsync(folder);
         }
 
-        public async Task<List<TaskFolderShortView>> GetByUser(Guid userId)
+        public async Task<IReadOnlyList<TaskFolderShortView>> GetByUser(Guid userId)
         {
             var taskFolders = await taskFolderRepository.GetAllAsync(u => u.CreatorId == userId);
             return mapper.Map<List<TaskFolderShortView>>(taskFolders);

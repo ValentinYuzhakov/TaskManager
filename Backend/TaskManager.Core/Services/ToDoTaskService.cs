@@ -82,7 +82,7 @@ namespace TaskManager.Core.Services
             return taskView;
         }
 
-        public async Task<List<ToDoTaskShortView>> GetAllByUser(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetAllByUser(Guid userId)
         {
             var tasks = await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId);
             return mapper.Map<List<ToDoTaskShortView>>(tasks);
@@ -104,7 +104,7 @@ namespace TaskManager.Core.Services
             await toDoTaskrepository.UpdateAsync(task);
         }
 
-        public async Task<List<ToDoTaskShortView>> GetDoneTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDoneTasks(Guid userId)
         {
             var tasks = await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId &&
                 t.Status == Domain.Enums.ToDoTaskStatus.Done);
@@ -112,7 +112,7 @@ namespace TaskManager.Core.Services
             return mapper.Map<List<ToDoTaskShortView>>(tasks);
         }
 
-        public async Task<List<ToDoTaskShortView>> GetImportantTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetImportantTasks(Guid userId)
         {
             var tasks = (await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId &&
                 t.Priority == ToDoTaskPriority.Highest || t.Priority == ToDoTaskPriority.High)).OrderByDescending(t => t.Priority);
@@ -120,20 +120,20 @@ namespace TaskManager.Core.Services
             return mapper.Map<List<ToDoTaskShortView>>(tasks);
         }
 
-        public async Task<List<ToDoTaskShortView>> GetDailyTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDailyTasks(Guid userId)
         {
             var tasks = await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId && t.Folders.Any(f => f.TaskFolder.Type == FolderType.MyDay));
 
             return mapper.Map<List<ToDoTaskShortView>>(tasks);
         }
 
-        public async Task<List<ToDoTaskShortView>> GetPlannedTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetPlannedTasks(Guid userId)
         {
             var plannedTasks = await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId && t.EndDate != null);
             return mapper.Map<List<ToDoTaskShortView>>(plannedTasks);
         }
 
-        public async Task<List<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId, Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetUserTasksByFolder(Guid folderId, Guid userId)
         {
             var tasks = await toDoTaskrepository.GetAllAsync(t => t.Folders.Any(f => f.TaskFolderId == folderId) && t.CreatorId == userId);
             return mapper.Map<List<ToDoTaskShortView>>(tasks);

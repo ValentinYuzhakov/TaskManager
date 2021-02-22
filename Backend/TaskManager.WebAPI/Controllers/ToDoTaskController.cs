@@ -46,7 +46,7 @@ namespace TaskManager.WebAPI.Controllers
         }
 
         [HttpGet("all/{userId:guid}")]
-        public async Task<List<ToDoTaskShortView>> GetTasksByUser(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetTasksByUser(Guid userId)
         {
             return await toDoTaskService.GetAllByUser(userId);
         }
@@ -73,25 +73,25 @@ namespace TaskManager.WebAPI.Controllers
         }
 
         [HttpGet("done/{userId:guid}")]
-        public async Task<List<ToDoTaskShortView>> GetDoneTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDoneTasks(Guid userId)
         {
             return await toDoTaskService.GetDoneTasks(userId);
         }
 
         [HttpGet("important/{userId:guid}")]
-        public async Task<List<ToDoTaskShortView>> GetImportantTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetImportantTasks(Guid userId)
         {
             return await toDoTaskService.GetImportantTasks(userId);
         }
 
         [HttpGet("daily/{userId:guid}")]
-        public async Task<List<ToDoTaskShortView>> GetDailyTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDailyTasks(Guid userId)
         {
             return await toDoTaskService.GetDailyTasks(userId);
         }
 
         [HttpGet("planned/{userId:guid}")]
-        public async Task<List<ToDoTaskShortView>> GetPlannedTasks(Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetPlannedTasks(Guid userId)
         {
             return await toDoTaskService.GetPlannedTasks(userId);
         }
@@ -104,7 +104,7 @@ namespace TaskManager.WebAPI.Controllers
         }
 
         [HttpGet("{folderId:guid}/{userId:guid}")]
-        public async Task<List<ToDoTaskShortView>> GetTasksByFolder(Guid folderId, Guid userId)
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetTasksByFolder(Guid folderId, Guid userId)
         {
             return await toDoTaskService.GetUserTasksByFolder(folderId, userId);
         }

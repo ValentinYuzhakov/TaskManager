@@ -68,14 +68,15 @@ namespace TaskManager.Data.DataInitializers
         private async Task CreateRoles()
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
-            rolesOptions.Roles.ForEach(async role =>
+
+            foreach (var role in rolesOptions.Roles)
             {
                 if (await roleManager.RoleExistsAsync(role.Name))
                 {
                     return;
                 }
                 await roleManager.CreateAsync(role);
-            });
+            }
         }
 
         private async Task CreateSystemFolders()

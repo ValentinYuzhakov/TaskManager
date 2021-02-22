@@ -13,7 +13,7 @@ namespace TaskManager.Core.Services.Interfaces
         Task<Guid> Create(CreateTaskFolderInfo info);
         Task Update(UpdateTaskFolderInfo info);
         Task Delete(Guid folderId);
-        Task<List<TaskFolderShortView>> GetByUser(Guid userId);
+        Task<IReadOnlyList<TaskFolderShortView>> GetByUser(Guid userId);
         Task<TaskFolder> GetById(Guid folderId);
         Task<TaskFolder> GetSystemFolder(FolderType folderType);
     }
