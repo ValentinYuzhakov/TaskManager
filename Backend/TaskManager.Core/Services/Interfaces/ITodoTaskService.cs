@@ -10,7 +10,7 @@ namespace TaskManager.Core.Services.Interfaces
     public interface ITodoTaskService
     {
         Task<Guid> Create(CreateTodoTaskInfo taskInfo);
-        Task<ToDoTaskView> GetById(Guid taskId);
+        Task<ToDoTaskView> FindById(Guid taskId);
         Task Delete(Guid taskId);
         Task<IReadOnlyList<ToDoTaskShortView>> GetAllByUser(Guid userId);
         Task Update(UpdateToDoTaskInfo taskinfo);

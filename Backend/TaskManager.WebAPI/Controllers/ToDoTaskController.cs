@@ -42,7 +42,7 @@ namespace TaskManager.WebAPI.Controllers
         [HttpGet("{taskId:guid}")]
         public async Task<ToDoTaskView> GetToDoTask(Guid taskId)
         {
-            return await toDoTaskService.GetById(taskId);
+            return await toDoTaskService.FindById(taskId);
         }
 
         [HttpGet("all/{userId:guid}")]

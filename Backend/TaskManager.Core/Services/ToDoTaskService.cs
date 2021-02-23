@@ -59,22 +59,7 @@ namespace TaskManager.Core.Services
             return task.Id;
         }
 
-
-
-        //TODO не удаляет сроки задачи.
-        public async Task Update(UpdateToDoTaskInfo taskinfo)
-        {
-            var taskToUpdate = await toDoTaskrepository.GetAsync(taskinfo.Id);
-            var todoTask = mapper.Map(taskinfo, taskToUpdate);
-            await toDoTaskrepository.UpdateAsync(todoTask);
-        }
-
-        public async Task Delete(Guid taskId)
-        {
-            await toDoTaskrepository.DeleteAsync(taskId);
-        }
-
-        public async Task<ToDoTaskView> GetById(Guid taskId)
+        public async Task<ToDoTaskView> FindById(Guid taskId)
         {
             var include = $"{nameof(ToDoTask.Folders)},{nameof(ToDoTask.Folders)}.{nameof(TaskFolderTodoTask.TaskFolder)}";
 
@@ -83,10 +68,19 @@ namespace TaskManager.Core.Services
             return taskView;
         }
 
-        public async Task<IReadOnlyList<ToDoTaskShortView>> GetAllByUser(Guid userId)
+        public async Task Update(UpdateToDoTaskInfo taskinfo)
         {
-            var tasks = await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId);
-            return mapper.Map<List<ToDoTaskShortView>>(tasks);
+            var taskToUpdate = await toDoTaskrepository.GetAsync(taskinfo.Id);
+            var todoTask = mapper.Map(taskinfo, taskToUpdate);
+            await toDoTaskrepository.UpdateAsync(todoTask);
+        }
+
+        public async Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo)
+        {
+            var task = await toDoTaskrepository.GetAsync(taskInfo.Id);
+            task.Status = Enum.Parse<ToDoTaskStatus>(taskInfo.TaskStatus);
+
+            await toDoTaskrepository.UpdateAsync(task);
         }
 
         public async Task UpdatePriority(UpdateToDoTaskPriorityInfo taskInfo)
@@ -97,12 +91,22 @@ namespace TaskManager.Core.Services
             await toDoTaskrepository.UpdateAsync(task);
         }
 
-        public async Task UpdateStatus(UpdateToDoTaskStatusInfo taskInfo)
+        public async Task MoveToFolder(Guid taskId, Guid folderId)
         {
-            var task = await toDoTaskrepository.GetAsync(taskInfo.Id);
-            task.Status = Enum.Parse<ToDoTaskStatus>(taskInfo.TaskStatus);
-
+            var task = await toDoTaskrepository.GetAsync(taskId);
+            task.Folders.FirstOrDefault(f => f.TaskFolder.Type == FolderType.Default).TaskFolderId = folderId;
             await toDoTaskrepository.UpdateAsync(task);
+        }
+
+        public async Task Delete(Guid taskId)
+        {
+            await toDoTaskrepository.DeleteAsync(taskId);
+        }
+
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetAllByUser(Guid userId)
+        {
+            var tasks = await toDoTaskrepository.GetAllAsync(t => t.CreatorId == userId);
+            return mapper.Map<List<ToDoTaskShortView>>(tasks);
         }
 
         public async Task<IReadOnlyList<ToDoTaskShortView>> GetDoneTasks(Guid userId)
@@ -138,13 +142,6 @@ namespace TaskManager.Core.Services
         {
             var tasks = await toDoTaskrepository.GetAllAsync(t => t.Folders.Any(f => f.TaskFolderId == folderId) && t.CreatorId == userId);
             return mapper.Map<List<ToDoTaskShortView>>(tasks);
-        }
-
-        public async Task MoveToFolder(Guid taskId, Guid folderId)
-        {
-            var task = await toDoTaskrepository.GetAsync(taskId);
-            task.Folders.FirstOrDefault(f => f.TaskFolder.Type == FolderType.Default).TaskFolderId = folderId;
-            await toDoTaskrepository.UpdateAsync(task);
         }
     }
 }

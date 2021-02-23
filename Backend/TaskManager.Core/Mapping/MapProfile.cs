@@ -23,7 +23,17 @@ namespace TaskManager.Core.Mapping
                     r.EndDate.HasValue ? r.EndDate.Value.ToString("f") : null));
 
             CreateMap<UpdateToDoTaskInfo, ToDoTask>()
-                .BeforeMap((s, c) => s.EndDate = s.EndDate ?? c.EndDate.ToString())
+                .BeforeMap((s, c) =>
+                {
+                    if (s.DeleteEndDate)
+                    {
+                        c.EndDate = null;
+                    }
+                    else
+                    {
+                        s.EndDate ??= c.EndDate.ToString();
+                    }
+                })
                 .AfterMap((s, c) => c.ModificationDate = DateTime.Now)
                 .ForMember(t => t.Id, o => o.Ignore())
                 .ForAllMembers(o => o.Condition((src, dest, member) => member is not null));
