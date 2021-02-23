@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos.TaskFolders;
-using TaskManager.Shared.ShortViewModels;
+using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.WebAPI.Controllers
 {
