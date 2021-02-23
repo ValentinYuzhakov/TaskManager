@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Core.Services.Interfaces;
+using TaskManager.Core.Utils;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Enums;
+using TaskManager.Domain.JoinTables;
 using TaskManager.Domain.Models;
 using TaskManager.Shared.Infos.TaskFolders;
-using TaskManager.Shared.ShortViewModels;
+using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services
 {
@@ -45,10 +48,10 @@ namespace TaskManager.Core.Services
             await taskFolderRepository.DeleteAsync(folder);
         }
 
-        public async Task<IReadOnlyList<TaskFolderShortView>> GetByUser(Guid userId)
+        public async Task<IReadOnlyList<TaskFolderView>> GetByUser(Guid userId)
         {
             var taskFolders = await taskFolderRepository.GetAllAsync(u => u.CreatorId == userId);
-            return mapper.Map<List<TaskFolderShortView>>(taskFolders);
+            return mapper.Map<List<TaskFolderView>>(taskFolders);
         }
 
         public async Task<TaskFolder> GetById(Guid folderId)

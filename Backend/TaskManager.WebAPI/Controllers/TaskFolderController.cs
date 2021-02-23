@@ -46,7 +46,7 @@ namespace TaskManager.WebAPI.Controllers
         }
 
         [HttpGet("{userId:guid}")]
-        public async Task<IReadOnlyList<TaskFolderShortView>> GetFoldersByUser(Guid userId)
+        public async Task<IReadOnlyList<TaskFolderView>> GetFoldersByUser(Guid userId)
         {
             return await taskFolderService.GetByUser(userId);
         }
