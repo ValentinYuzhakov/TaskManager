@@ -10,6 +10,6 @@ namespace TaskManager.Core.Services.Interfaces
     public interface IUserService
     {
         Task<Guid> Create(UserRegistrationInfo info);
-        Task<string> Authorize(UserAuthorizeInfo info);
+        Task<UserTokens> Authorize(UserAuthorizeInfo info);
     }
 }

@@ -24,7 +24,7 @@ namespace TaskManager.Core.Services
             return await identityService.Register(info);
         }
 
-        public async Task<string> Authorize(UserAuthorizeInfo info)
+        public async Task<UserTokens> Authorize(UserAuthorizeInfo info)
         {
             return await identityService.Authorize(info);
         }

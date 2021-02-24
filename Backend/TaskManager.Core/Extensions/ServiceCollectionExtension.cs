@@ -13,6 +13,7 @@ namespace TaskManager.Core.Extensions
             services.AddScoped<ISubTaskService, SubTaskService>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<ITokenService, TokenService>();
 
             return services;
         }

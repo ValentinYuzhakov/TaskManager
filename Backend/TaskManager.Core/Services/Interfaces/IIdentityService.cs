@@ -11,6 +11,6 @@ namespace TaskManager.Core.Services.Interfaces
     public interface IIdentityService
     {
         Task<Guid> Register(UserRegistrationInfo info);
-        Task<string> Authorize(UserAuthorizeInfo info);
+        Task<UserTokens> Authorize(UserAuthorizeInfo info);
     }
 }
