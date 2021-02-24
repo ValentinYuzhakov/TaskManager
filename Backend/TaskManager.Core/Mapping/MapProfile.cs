@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using TaskManager.Domain.Models;
+using TaskManager.Shared.Infos;
 using TaskManager.Shared.Infos.SubTasks;
 using TaskManager.Shared.Infos.TaskFolders;
 using TaskManager.Shared.Infos.ToDoTasks;
@@ -49,6 +50,11 @@ namespace TaskManager.Core.Mapping
             #region SubTask mappings
             CreateMap<SubTaskCreateInfo, SubTask>();
             CreateMap<UpdateSubTaskInfo, SubTask>();
+            #endregion
+
+            #region User mappings
+            CreateMap<UserRegistrationInfo, User>();
+
             #endregion
         }
     }

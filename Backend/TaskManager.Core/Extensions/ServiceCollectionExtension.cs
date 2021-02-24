@@ -11,6 +11,8 @@ namespace TaskManager.Core.Extensions
             services.AddScoped<ITodoTaskService, ToDoTaskService>();
             services.AddScoped<ITaskFolderService, TaskFolderService>();
             services.AddScoped<ISubTaskService, SubTaskService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

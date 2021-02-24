@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Shared;
@@ -7,9 +8,9 @@ using TaskManager.Shared.Infos;
 
 namespace TaskManager.Core.Services.Interfaces
 {
-    public interface IUserService
+    public interface IIdentityService
     {
-        Task<Guid> Create(UserRegistrationInfo info);
+        Task<Guid> Register(UserRegistrationInfo info);
         Task<string> Authorize(UserAuthorizeInfo info);
     }
 }

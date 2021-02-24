@@ -50,8 +50,8 @@ namespace TaskManager.Data.DataInitializers
             {
                 var admin = new User
                 {
-                    FirstName = adminOptions.Name,
-                    SecondName = adminOptions.Secondname,
+                    Firstname = adminOptions.Name,
+                    Lastname = adminOptions.Secondname,
                     Email = adminOptions.Email,
                     UserName = adminOptions.Email
                 };

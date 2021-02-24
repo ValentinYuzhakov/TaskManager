@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TaskManager.Core.Extensions;
 using TaskManager.Core.Mapping;
 using TaskManager.Data;
@@ -30,7 +34,10 @@ namespace TaskManager.WebAPI
             services.AddCustomDbContext<DatabaseContext>(Configuration);
             services.AddCustomIdentity<User, Role>()
                 .AddRoles<Role>()
-                .AddEntityFrameworkStores<DatabaseContext>();
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
+
+
 
             services.Configure<AdminOptions>(Configuration.GetSection(nameof(AdminOptions)));
             services.Configure<RolesOptions>(Configuration.GetSection(nameof(RolesOptions)));
@@ -39,7 +46,30 @@ namespace TaskManager.WebAPI
             services.AddServices();
             services.AddRepositories();
             services.AddControllers();
-            services.AddAuthentication();
+
+            var key = Configuration["BearerToken:Key"];
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["BearerToken:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["BearerToken:Audience"],
+                        ValidateLifetime = true,
+                        IssuerSigningKey = symmetricSecurityKey,
+                        ValidateIssuerSigningKey = true
+                    };
+                });
             services.AddAuthorization();
         }
 
