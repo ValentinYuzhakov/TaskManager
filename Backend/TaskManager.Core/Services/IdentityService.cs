@@ -1,52 +1,37 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Services.Interfaces;
+using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Models;
 using TaskManager.Shared;
 using TaskManager.Shared.Infos;
+using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services
 {
     public class IdentityService : IIdentityService
     {
         private readonly IMapper mapper;
+        private readonly IUserRepository userRepository;
         private readonly ITokenService tokenService;
         private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
 
 
         public IdentityService(UserManager<User> userManager,
-            IMapper mapper, ITokenService tokenService)
+            IMapper mapper, ITokenService tokenService,
+            SignInManager<User> signInManager, IUserRepository userRepository)
         {
             this.userManager = userManager;
             this.mapper = mapper;
             this.tokenService = tokenService;
+            this.signInManager = signInManager;
+            this.userRepository = userRepository;
         }
 
-
-        public async Task<UserTokens> Authorize(UserAuthorizeInfo info)
-        {
-            var user = await userManager.FindByEmailAsync(info.Email);
-            if (user is not null && await userManager.CheckPasswordAsync(user, info.Password))
-            {
-                var claims = GetClaims(user);
-                return new UserTokens
-                {
-                    AccessToken = tokenService.GenerateJwtToken(claims.Claims),
-                    RefreshToken = tokenService.GenerateRefreshToken()
-                };
-            }
-            throw new Exception("Wrong email or password");
-        }
 
         public async Task<Guid> Register(UserRegistrationInfo info)
         {
@@ -54,34 +39,46 @@ namespace TaskManager.Core.Services
             if (user is null)
             {
                 var newUser = mapper.Map<User>(info);
-                newUser.UserName = info.Email;
-                var res = await userManager.CreateAsync(newUser, info.Password);
-                return newUser.Id;
+                var result = await userManager.CreateAsync(newUser, info.Password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(newUser, "User");
+                    return newUser.Id;
+                }
+
+                var builder = new StringBuilder();
+
+                foreach (var error in result.Errors)
+                {
+                    builder.AppendLine(error.Description);
+                }
+
+                throw new Exception(builder.ToString());
             }
             throw new Exception("Email is already registered");
         }
 
-
-
-        private ClaimsIdentity GetClaims(User user)
+        public async Task<UserAuthorizeView> Authorize(UserAuthorizeInfo info)
         {
-            var claims = new List<Claim>
+            var user = await userManager.FindByEmailAsync(info.Email);
+            if (user is not null && (await signInManager.CheckPasswordSignInAsync(user, info.Password, false)).Succeeded)
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim("Firstname", user.Firstname),
-                new Claim("Lastname", user.Lastname),
-                new Claim(ClaimTypes.Email, user.Email)
-            };
-            ClaimsIdentity claimsIdentity =
-            new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-            return claimsIdentity;
+                var refreshToken = new RefreshToken
+                {
+                    Token = tokenService.GenerateRefreshToken(),
+                    UserId = user.Id,
+                    User = user,
+                    ExpireDate = DateTime.Now.AddDays(1)
+                };
+                user.RefreshTokens.Add(refreshToken);
+                await userRepository.SaveChangesAsync();
+                return new UserAuthorizeView
+                {
+                    AccessToken = await tokenService.GenerateJwtToken(user),
+                    RefreshToken = refreshToken.Token
+                };
+            }
+            throw new Exception("Wrong email or password");
         }
-    }
-
-    public class UserTokens
-    {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
     }
 }

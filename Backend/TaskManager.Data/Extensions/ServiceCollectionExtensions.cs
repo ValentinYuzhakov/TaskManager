@@ -15,6 +15,7 @@ namespace TaskManager.Data.Extensions
             services.AddScoped<IToDoTaskRepository, ToDoTaskRepository>();
             services.AddScoped<ITaskFolderRepository, TaskFolderRepository>();
             services.AddScoped<ISubTaskRepository, SubTaskRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }

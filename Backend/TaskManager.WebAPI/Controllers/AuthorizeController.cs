@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TaskManager.Core.Services;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Shared;
+using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.WebAPI.Controllers
 {
@@ -12,7 +13,7 @@ namespace TaskManager.WebAPI.Controllers
     [Route("api/Authorize")]
     public class AuthorizeController : ControllerBase
     {
-        public async Task<UserTokens> Authorize([FromBody] UserAuthorizeInfo request,
+        public async Task<UserAuthorizeView> Authorize([FromBody] UserAuthorizeInfo request,
             [FromServices] IUserService userService)
         {
             return await userService.Authorize(request);

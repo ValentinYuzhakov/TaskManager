@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Shared;
 using TaskManager.Shared.Infos;
+using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.Core.Services
 {
@@ -24,7 +25,7 @@ namespace TaskManager.Core.Services
             return await identityService.Register(info);
         }
 
-        public async Task<UserTokens> Authorize(UserAuthorizeInfo info)
+        public async Task<UserAuthorizeView> Authorize(UserAuthorizeInfo info)
         {
             return await identityService.Authorize(info);
         }

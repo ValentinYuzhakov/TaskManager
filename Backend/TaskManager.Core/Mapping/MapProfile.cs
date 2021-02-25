@@ -53,7 +53,8 @@ namespace TaskManager.Core.Mapping
             #endregion
 
             #region User mappings
-            CreateMap<UserRegistrationInfo, User>();
+            CreateMap<UserRegistrationInfo, User>()
+                .ForMember(u => u.UserName, o => o.MapFrom(i => i.Email));
 
             #endregion
         }
