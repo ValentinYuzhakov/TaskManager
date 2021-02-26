@@ -36,7 +36,7 @@ namespace TaskManager.Core.Services
             var token = new JwtSecurityToken(
                    issuer: configuration["BearerToken:Issuer"],
                    audience: configuration["BearerToken:Audience"],
-                   claims: (await GetClaims(user)).Claims,
+                   claims: await GetClaims(user),
                    expires: DateTime.Now.AddMinutes(double.Parse(configuration["BearerToken:LifeTime"])),
                    signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256));
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -55,12 +55,18 @@ namespace TaskManager.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task RevokeRefreshToken(User user, string refreshToken)
+        public async Task RevokeRefreshToken(User user, string refreshToken)
         {
-            throw new NotImplementedException();
+            var userRefreshToken = user.RefreshTokens.FirstOrDefault();
+            if (userRefreshToken is null || !userRefreshToken.IsActive)
+            {
+                throw new Exception("Invalid Token");
+            }
+
+            userRefreshToken.RevokeDate = DateTime.Now;
         }
 
-        private async Task<ClaimsIdentity> GetClaims(User user)
+        private async Task<IEnumerable<Claim>> GetClaims(User user)
         {
             var userRole = (await userManager.GetRolesAsync(user)).First();
             var claims = new List<Claim>
@@ -71,10 +77,10 @@ namespace TaskManager.Core.Services
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, userRole)
             };
-            ClaimsIdentity claimsIdentity =
-            new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-            return claimsIdentity;
+            //ClaimsIdentity claimsIdentity =
+            //new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType,
+            //    ClaimsIdentity.DefaultRoleClaimType);
+            return claims;
         }
     }
 }

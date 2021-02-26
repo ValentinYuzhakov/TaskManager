@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Text;
@@ -19,17 +20,20 @@ namespace TaskManager.Core.Services
         private readonly ITokenService tokenService;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private HttpContext httpContext;
 
 
         public IdentityService(UserManager<User> userManager,
             IMapper mapper, ITokenService tokenService,
-            SignInManager<User> signInManager, IUserRepository userRepository)
+            SignInManager<User> signInManager,
+            IUserRepository userRepository, IHttpContextAccessor contextAccessor)
         {
             this.userManager = userManager;
             this.mapper = mapper;
             this.tokenService = tokenService;
             this.signInManager = signInManager;
             this.userRepository = userRepository;
+            httpContext = contextAccessor.HttpContext;
         }
 
 
@@ -71,7 +75,7 @@ namespace TaskManager.Core.Services
                     ExpireDate = DateTime.Now.AddDays(1)
                 };
                 user.RefreshTokens.Add(refreshToken);
-                await userRepository.SaveChangesAsync();
+                await userRepository.UpdateAsync(user);
                 return new UserAuthorizeView
                 {
                     AccessToken = await tokenService.GenerateJwtToken(user),
@@ -79,6 +83,14 @@ namespace TaskManager.Core.Services
                 };
             }
             throw new Exception("Wrong email or password");
+        }
+
+        public async Task RevokeRefreshToken()
+        {
+            var refreshToken = httpContext.Request.Headers["refresh-token"].ToString();
+
+
+            tokenService.RevokeRefreshToken();
         }
     }
 }

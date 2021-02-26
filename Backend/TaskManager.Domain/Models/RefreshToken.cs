@@ -11,6 +11,9 @@ namespace TaskManager.Domain.Models
     {
         public string Token { get; set; }
         public DateTime ExpireDate { get; set; }
+        public DateTime? RevokeDate { get; set; }
+        public bool IsExpired => DateTime.Now >= ExpireDate;
+        public bool IsActive => RevokeDate == null && !IsExpired;
         public Guid UserId { get; set; }
         public User User { get; set; }
     }
