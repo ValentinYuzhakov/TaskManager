@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -36,6 +35,7 @@ namespace TaskManager.Core.Services
             var token = new JwtSecurityToken(
                    issuer: configuration["BearerToken:Issuer"],
                    audience: configuration["BearerToken:Audience"],
+                   notBefore: DateTime.Now,
                    claims: await GetClaims(user),
                    expires: DateTime.Now.AddMinutes(double.Parse(configuration["BearerToken:LifeTime"])),
                    signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256));
@@ -50,12 +50,20 @@ namespace TaskManager.Core.Services
             return Convert.ToBase64String(randomNumber);
         }
 
-        public Task<RefreshResult> Refresh(string jwtToken, string refreshToken)
+        public async Task<RefreshResult> Refresh(string jwtToken, string refreshToken)
         {
-            throw new NotImplementedException();
+
+
+
+
+
+            return new RefreshResult
+            {
+
+            };
         }
 
-        public async Task RevokeRefreshToken(User user, string refreshToken)
+        public void RevokeRefreshToken(User user, string refreshToken)
         {
             var userRefreshToken = user.RefreshTokens.FirstOrDefault();
             if (userRefreshToken is null || !userRefreshToken.IsActive)

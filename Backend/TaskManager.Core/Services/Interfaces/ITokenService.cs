@@ -10,6 +10,6 @@ namespace TaskManager.Core.Services.Interfaces
         Task<string> GenerateJwtToken(User user);
         string GenerateRefreshToken();
         Task<RefreshResult> Refresh(string jwtToken, string refreshToken);
-        Task RevokeRefreshToken(User user, string refreshToken);
+        void RevokeRefreshToken(User user, string refreshToken);
     }
 }

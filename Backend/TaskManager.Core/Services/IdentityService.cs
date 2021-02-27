@@ -20,13 +20,14 @@ namespace TaskManager.Core.Services
         private readonly ITokenService tokenService;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
-        private HttpContext httpContext;
+        private readonly HttpContext httpContext;
 
 
         public IdentityService(UserManager<User> userManager,
             IMapper mapper, ITokenService tokenService,
             SignInManager<User> signInManager,
-            IUserRepository userRepository, IHttpContextAccessor contextAccessor)
+            IUserRepository userRepository,
+            IHttpContextAccessor contextAccessor)
         {
             this.userManager = userManager;
             this.mapper = mapper;
@@ -85,12 +86,21 @@ namespace TaskManager.Core.Services
             throw new Exception("Wrong email or password");
         }
 
+        public async Task<RefreshResult> RefreshToken()
+        {
+            var jwtToken = httpContext.Request.Headers["Authorization"].ToString();
+            var refreshToken = httpContext.Request.Headers["refresh-token"].ToString();
+
+            return await tokenService.Refresh(jwtToken, refreshToken);
+        }
+
         public async Task RevokeRefreshToken()
         {
             var refreshToken = httpContext.Request.Headers["refresh-token"].ToString();
+            var user = await userManager.GetUserAsync(httpContext.User);
 
-
-            tokenService.RevokeRefreshToken();
+            tokenService.RevokeRefreshToken(user, refreshToken);
+            await userRepository.UpdateAsync(user);
         }
     }
 }
