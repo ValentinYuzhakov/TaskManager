@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using TaskManager.Core.Auth;
+using TaskManager.Core.Auth.Interfaces;
 using TaskManager.Core.Services;
 using TaskManager.Core.Services.Interfaces;
 

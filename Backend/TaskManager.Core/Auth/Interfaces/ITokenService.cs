@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using TaskManager.Domain.Models;
 
-namespace TaskManager.Core.Services.Interfaces
+namespace TaskManager.Core.Auth.Interfaces
 {
     public interface ITokenService
     {

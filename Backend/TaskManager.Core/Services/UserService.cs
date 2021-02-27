@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.Auth.Interfaces;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Shared;

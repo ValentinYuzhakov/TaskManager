@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.Auth.Interfaces;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Data.Repositories.Interfaces;
 using TaskManager.Domain.Models;
@@ -11,7 +12,7 @@ using TaskManager.Shared;
 using TaskManager.Shared.Infos;
 using TaskManager.Shared.ViewModels;
 
-namespace TaskManager.Core.Services
+namespace TaskManager.Core.Auth
 {
     public class IdentityService : IIdentityService
     {

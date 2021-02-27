@@ -8,7 +8,7 @@ using TaskManager.Shared;
 using TaskManager.Shared.Infos;
 using TaskManager.Shared.ViewModels;
 
-namespace TaskManager.Core.Services.Interfaces
+namespace TaskManager.Core.Auth.Interfaces
 {
     public interface IIdentityService
     {

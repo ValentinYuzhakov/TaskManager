@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TaskManager.Core;
+using TaskManager.Core.Auth.Interfaces;
 using TaskManager.Core.Services.Interfaces;
 
 namespace TaskManager.WebAPI.Controllers

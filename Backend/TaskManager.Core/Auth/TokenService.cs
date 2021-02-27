@@ -9,10 +9,11 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.Auth.Interfaces;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Domain.Models;
 
-namespace TaskManager.Core.Services
+namespace TaskManager.Core.Auth
 {
     public class TokenService : ITokenService
     {
