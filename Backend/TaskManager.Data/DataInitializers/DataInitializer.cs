@@ -117,7 +117,16 @@ namespace TaskManager.Data.DataInitializers
 
         private async Task LinkSystemFoldersWithAdmin()
         {
+            var userRepository = serviceProvider.GetRequiredService<IUserRepository>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            var admin = await userManager.FindByEmailAsync(adminOptions.Email);
 
+            var systemFolders = await taskFolderRepository.GetAllAsync(f => f.Type == FolderType.Important ||
+                                                                            f.Type == FolderType.MyDay ||
+                                                                            f.Type == FolderType.Planned ||
+                                                                            f.Type == FolderType.Tasks);
+            admin.TaskFolders.ToList().AddRange(systemFolders);
+            await userRepository.UpdateAsync(admin);
         }
     }
 }
