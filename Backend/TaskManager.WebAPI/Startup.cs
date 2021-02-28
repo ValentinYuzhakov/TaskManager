@@ -9,7 +9,6 @@ using TaskManager.Core.Mapping;
 using TaskManager.Data;
 using TaskManager.Data.DataInitializers;
 using TaskManager.Data.DataInitializers.Options;
-using TaskManager.Data.Extensions;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.WebAPI
