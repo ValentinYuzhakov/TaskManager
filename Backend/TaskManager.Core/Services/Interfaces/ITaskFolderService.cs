@@ -16,5 +16,6 @@ namespace TaskManager.Core.Services.Interfaces
         Task<IReadOnlyList<TaskFolderView>> GetByUser(Guid userId);
         Task<TaskFolder> GetById(Guid folderId);
         Task<TaskFolder> GetSystemFolder(FolderType folderType);
+        Task<IReadOnlyList<TaskFolder>> CreateSystemFolders();
     }
 }

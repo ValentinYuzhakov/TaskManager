@@ -39,7 +39,7 @@ namespace TaskManager.Core.Auth
         }
 
 
-        public async Task<Guid> Register(UserRegistrationInfo info)
+        public async Task<User> Register(UserRegistrationInfo info)
         {
             var user = await userManager.FindByEmailAsync(info.Email);
             if (user is null)
@@ -49,7 +49,7 @@ namespace TaskManager.Core.Auth
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(newUser, "User");
-                    return newUser.Id;
+                    return newUser;
                 }
 
                 var builder = new StringBuilder();

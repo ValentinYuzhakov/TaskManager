@@ -1,7 +1,7 @@
 ﻿
 using System.Threading.Tasks;
 
-namespace TaskManager.Data.DataInitializers.Interfaces
+namespace TaskManager.Core.DataInitializers.Interfaces
 {
     public interface IDataInitializer
     {

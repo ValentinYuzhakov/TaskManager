@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TaskManager.Core.DataInitializers.Options;
 using TaskManager.Core.Extensions;
 using TaskManager.Core.Mapping;
 using TaskManager.Data;
-using TaskManager.Data.DataInitializers;
-using TaskManager.Data.DataInitializers.Options;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.WebAPI

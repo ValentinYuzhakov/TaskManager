@@ -10,7 +10,7 @@ namespace TaskManager.Domain.Models
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public IList<ToDoTask> Tasks { get; } = new List<ToDoTask>();
-        public IList<TaskFolder> TaskFolders { get; set; } = new List<TaskFolder>();
+        public List<TaskFolder> TaskFolders { get; set; } = new List<TaskFolder>();
         public IList<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 }

@@ -12,7 +12,7 @@ namespace TaskManager.Core.Auth.Interfaces
 {
     public interface IIdentityService
     {
-        Task<Guid> Register(UserRegistrationInfo info);
+        Task<User> Register(UserRegistrationInfo info);
         Task<UserAuthorizeView> Authorize(UserAuthorizeInfo info);
         Task<RefreshResult> RefreshToken();
         Task RevokeRefreshToken();

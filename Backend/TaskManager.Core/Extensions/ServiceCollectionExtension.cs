@@ -4,11 +4,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using TaskManager.Core.Auth;
 using TaskManager.Core.Auth.Interfaces;
+using TaskManager.Core.DataInitializers;
+using TaskManager.Core.DataInitializers.Interfaces;
 using TaskManager.Core.Services;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Data.Repositories;
@@ -18,6 +22,21 @@ namespace TaskManager.Core.Extensions
 {
     public static class ServiceCollectionExtension
     {
+        public static async Task<IHost> InitializeDatabase(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            await scope.ServiceProvider.GetRequiredService<IDataInitializer>().Initialize();
+
+            return host;
+        }
+
+        public static IServiceCollection AddDataInitializers(this IServiceCollection services)
+        {
+            services.AddScoped<IDataInitializer, DataInitializer>();
+
+            return services;
+        }
+
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IToDoTaskRepository, ToDoTaskRepository>();

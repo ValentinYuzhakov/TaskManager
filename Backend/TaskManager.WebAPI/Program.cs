@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
-using TaskManager.Data.DataInitializers;
+using TaskManager.Core.Extensions;
 
 namespace TaskManager.WebAPI
 {
