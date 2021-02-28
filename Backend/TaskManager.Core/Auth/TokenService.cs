@@ -39,7 +39,7 @@ namespace TaskManager.Core.Auth
                    notBefore: DateTime.Now,
                    claims: await GetClaims(user),
                    expires: DateTime.Now.AddMinutes(double.Parse(configuration["BearerToken:LifeTime"])),
-                   signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256));
+                   signingCredentials: new SigningCredentials(secretKey, configuration["BearerToken:Algorithm"]));
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
