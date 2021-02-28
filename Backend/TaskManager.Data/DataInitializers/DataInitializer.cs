@@ -81,10 +81,8 @@ namespace TaskManager.Data.DataInitializers
 
         private async Task CreateSystemFolders()
         {
-            var folders = await taskFolderRepository.GetAllAsync(f => f.Type == FolderType.Important ||
-                                                                      f.Type == FolderType.MyDay ||
-                                                                      f.Type == FolderType.Planned ||
-                                                                      f.Type == FolderType.Tasks);
+            var folders = await taskFolderRepository.GetSystemFolders();
+
             if (folders.Count == 0)
             {
                 List<TaskFolder> taskFolders = new()
@@ -121,10 +119,7 @@ namespace TaskManager.Data.DataInitializers
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
             var admin = await userManager.FindByEmailAsync(adminOptions.Email);
 
-            var systemFolders = await taskFolderRepository.GetAllAsync(f => f.Type == FolderType.Important ||
-                                                                            f.Type == FolderType.MyDay ||
-                                                                            f.Type == FolderType.Planned ||
-                                                                            f.Type == FolderType.Tasks);
+            var systemFolders = await taskFolderRepository.GetSystemFolders();
             admin.TaskFolders.ToList().AddRange(systemFolders);
             await userRepository.UpdateAsync(admin);
         }
