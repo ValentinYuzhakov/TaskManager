@@ -10,7 +10,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Auth.Interfaces;
-using TaskManager.Core.Services.Interfaces;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.Core.Auth
@@ -55,21 +54,15 @@ namespace TaskManager.Core.Auth
         {
             var result = ValidateJwtToken(jwtToken);
             var user = await userManager.FindByEmailAsync(result.ClaimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value);
-            if (result.IsValid)
+            if (result.IsValid && user is not null && ValidateRefreshToken(user, refreshToken))
             {
-
-
-
+                return new RefreshResult
+                {
+                    AccessToken = await GenerateJwtToken(user),
+                    RefreshToken = GenerateRefreshToken()
+                };
             }
-
-
-
-
-            return new RefreshResult
-            {
-                AccessToken = await GenerateJwtToken(user),
-                RefreshToken = GenerateRefreshToken()
-            };
+            throw new Exception();
         }
 
         public void RevokeRefreshToken(User user, string refreshToken)
