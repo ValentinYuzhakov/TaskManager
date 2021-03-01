@@ -54,7 +54,7 @@ namespace TaskManager.Core.Auth
         public async Task<RefreshResult> RefreshJwtToken(string jwtToken, string refreshToken)
         {
             var result = ValidateJwtToken(jwtToken);
-
+            var user = await userManager.FindByEmailAsync(result.ClaimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value);
             if (result.IsValid)
             {
 
@@ -67,7 +67,8 @@ namespace TaskManager.Core.Auth
 
             return new RefreshResult
             {
-
+                AccessToken = await GenerateJwtToken(user),
+                RefreshToken = GenerateRefreshToken()
             };
         }
 
@@ -93,9 +94,7 @@ namespace TaskManager.Core.Auth
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, userRole)
             };
-            //ClaimsIdentity claimsIdentity =
-            //new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType,
-            //    ClaimsIdentity.DefaultRoleClaimType);
+
             return claims;
         }
 
@@ -116,9 +115,14 @@ namespace TaskManager.Core.Auth
             return new ValidateResult { ClaimsPrincipal = principal, Token = jwtToken as JwtSecurityToken, IsValid = true };
         }
 
-        private void ValidateRefreshToken(string refreshToken)
+        private bool ValidateRefreshToken(User user, string refreshToken)
         {
-
+            var token = user.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken);
+            if (token is not null && token.IsActive)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
