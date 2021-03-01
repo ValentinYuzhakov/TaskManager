@@ -9,7 +9,7 @@ namespace TaskManager.Core.Auth.Interfaces
     {
         Task<string> GenerateJwtToken(User user);
         string GenerateRefreshToken();
-        Task<RefreshResult> Refresh(string jwtToken, string refreshToken);
+        Task<RefreshResult> RefreshJwtToken(string jwtToken, string refreshToken);
         void RevokeRefreshToken(User user, string refreshToken);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -90,9 +91,9 @@ namespace TaskManager.Core.Auth
         public async Task<RefreshResult> RefreshToken()
         {
             var jwtToken = httpContext.Request.Headers["Authorization"].ToString();
-            var refreshToken = httpContext.Request.Headers["refresh-token"].ToString();
+            var refreshToken = await httpContext.GetTokenAsync("Bearer", "AccessToken");/*.Request.Headers["refresh-token"].ToString();*/
 
-            return await tokenService.Refresh(jwtToken, refreshToken);
+            return await tokenService.RefreshJwtToken(jwtToken, refreshToken);
         }
 
         public async Task RevokeRefreshToken()

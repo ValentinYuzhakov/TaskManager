@@ -51,9 +51,16 @@ namespace TaskManager.Core.Auth
             return Convert.ToBase64String(randomNumber);
         }
 
-        public async Task<RefreshResult> Refresh(string jwtToken, string refreshToken)
+        public async Task<RefreshResult> RefreshJwtToken(string jwtToken, string refreshToken)
         {
+            var result = ValidateJwtToken(jwtToken);
 
+            if (result.IsValid)
+            {
+
+
+
+            }
 
 
 
@@ -90,6 +97,28 @@ namespace TaskManager.Core.Auth
             //new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType,
             //    ClaimsIdentity.DefaultRoleClaimType);
             return claims;
+        }
+
+        private ValidateResult ValidateJwtToken(string token)
+        {
+            var principal = new JwtSecurityTokenHandler()
+                .ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = configuration["BearerToken:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = configuration["BearerToken:Audience"],
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["BearerToken:Key"])),
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero
+                }, out var jwtToken);
+            return new ValidateResult { ClaimsPrincipal = principal, Token = jwtToken as JwtSecurityToken, IsValid = true };
+        }
+
+        private void ValidateRefreshToken(string refreshToken)
+        {
+
         }
     }
 }
