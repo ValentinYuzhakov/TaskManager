@@ -114,6 +114,7 @@ namespace TaskManager.Core.Auth
             var token = user.RefreshTokens.FirstOrDefault(t => t.Token.Contains(refreshToken));
             if (token is not null && token.IsActive)
             {
+                token.RevokeDate = DateTime.Now;
                 return true;
             }
             return false;
