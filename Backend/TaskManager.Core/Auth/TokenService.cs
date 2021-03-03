@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -53,7 +54,8 @@ namespace TaskManager.Core.Auth
         public async Task<RefreshResult> RefreshJwtToken(string jwtToken, string refreshToken)
         {
             var result = ValidateJwtToken(jwtToken);
-            var user = await userManager.FindByEmailAsync(result.ClaimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value);
+            var email = result.ClaimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var user = await userManager.Users.Include(u => u.RefreshTokens).FirstOrDefaultAsync(u => u.Email == email);
             if (result.IsValid && user is not null && ValidateRefreshToken(user, refreshToken))
             {
                 return new RefreshResult
@@ -100,7 +102,6 @@ namespace TaskManager.Core.Auth
                     ValidIssuer = configuration["BearerToken:Issuer"],
                     ValidateAudience = true,
                     ValidAudience = configuration["BearerToken:Audience"],
-                    ValidateLifetime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["BearerToken:Key"])),
                     ValidateIssuerSigningKey = true,
                     ClockSkew = TimeSpan.Zero
@@ -110,7 +111,7 @@ namespace TaskManager.Core.Auth
 
         private bool ValidateRefreshToken(User user, string refreshToken)
         {
-            var token = user.RefreshTokens.FirstOrDefault(t => t.Token == refreshToken);
+            var token = user.RefreshTokens.FirstOrDefault(t => t.Token.Contains(refreshToken));
             if (token is not null && token.IsActive)
             {
                 return true;

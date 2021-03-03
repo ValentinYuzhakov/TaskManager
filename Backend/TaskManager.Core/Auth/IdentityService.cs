@@ -90,8 +90,8 @@ namespace TaskManager.Core.Auth
 
         public async Task<RefreshResult> RefreshToken()
         {
-            var jwtToken = httpContext.Request.Headers["Authorization"].ToString();
-            var refreshToken = await httpContext.GetTokenAsync("Bearer", "AccessToken");/*.Request.Headers["refresh-token"].ToString();*/
+            var jwtToken = httpContext.Request.Headers["Authorization"].ToString().Split(" ")[1];
+            var refreshToken = httpContext.Request.Headers["refresh-token"].ToString();
 
             return await tokenService.RefreshJwtToken(jwtToken, refreshToken);
         }
