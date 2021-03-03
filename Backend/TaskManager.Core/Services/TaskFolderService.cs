@@ -63,5 +63,35 @@ namespace TaskManager.Core.Services
         {
             return await taskFolderRepository.GetAsync(f => f.Type == folderType);
         }
+
+        public async Task<IReadOnlyList<TaskFolder>> CreateSystemFolders()
+        {
+            List<TaskFolder> systemFolders = new()
+            {
+                new TaskFolder
+                {
+                    Name = "Мой день",
+                    Type = FolderType.MyDay,
+                },
+                new TaskFolder
+                {
+                    Name = "Задачи",
+                    Type = FolderType.Tasks,
+                },
+                new TaskFolder
+                {
+                    Name = "Запланированные",
+                    Type = FolderType.Planned,
+                },
+                new TaskFolder
+                {
+                    Name = "Важные",
+                    Type = FolderType.Important,
+                }
+            };
+
+            await taskFolderRepository.CreateRangeAsync(systemFolders);
+            return systemFolders;
+        }
     }
 }

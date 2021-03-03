@@ -3,16 +3,24 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using TaskManager.Domain.Models;
+using System.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskManager.WebAPI.Controllers
 {
+    [Authorize]
+    [ApiController]
     public class SystemController : ControllerBase
     {
-        protected Guid? CurrentUserId { get; }
+        private readonly UserManager<User> userManager;
+
 
         public SystemController(UserManager<User> userManager)
         {
-           // CurrentUserId = userManager.GetUserAsync(HttpContext?.User).Result?.Id;
+            this.userManager = userManager;
         }
+
+
+        protected Guid CurrentUserId => Guid.Parse(userManager.GetUserId(User));
     }
 }

@@ -45,10 +45,10 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("{userId:guid}")]
-        public async Task<IReadOnlyList<TaskFolderView>> GetFoldersByUser(Guid userId)
+        [HttpGet]
+        public async Task<IReadOnlyList<TaskFolderView>> GetFoldersByUser()
         {
-            return await taskFolderService.GetByUser(userId);
+            return await taskFolderService.GetByUser(CurrentUserId);
         }
     }
 }

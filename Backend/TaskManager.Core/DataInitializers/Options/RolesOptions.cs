@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TaskManager.Domain.Models;
 
-namespace TaskManager.Data.DataInitializers.Options
+namespace TaskManager.Core.DataInitializers.Options
 {
     public class RolesOptions
     {

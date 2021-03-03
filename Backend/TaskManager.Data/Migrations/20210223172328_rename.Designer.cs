@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManager.Data;
 
 namespace TaskManager.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210223172328_rename")]
+    partial class rename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,31 +141,6 @@ namespace TaskManager.Data.Migrations
                     b.HasIndex("ToDoTaskId");
 
                     b.ToTable("TaskFolderTodoTask");
-                });
-
-            modelBuilder.Entity("TaskManager.Domain.Models.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ExpireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RevokeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("TaskManager.Domain.Models.Role", b =>
@@ -433,17 +410,6 @@ namespace TaskManager.Data.Migrations
                     b.Navigation("ToDoTask");
                 });
 
-            modelBuilder.Entity("TaskManager.Domain.Models.RefreshToken", b =>
-                {
-                    b.HasOne("TaskManager.Domain.Models.User", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TaskManager.Domain.Models.SubTask", b =>
                 {
                     b.HasOne("TaskManager.Domain.Models.ToDoTask", "ToDoTask")
@@ -489,8 +455,6 @@ namespace TaskManager.Data.Migrations
 
             modelBuilder.Entity("TaskManager.Domain.Models.User", b =>
                 {
-                    b.Navigation("RefreshTokens");
-
                     b.Navigation("TaskFolders");
 
                     b.Navigation("Tasks");

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using TaskManager.Data.Configurations;
@@ -6,7 +7,8 @@ using TaskManager.Domain.Models;
 
 namespace TaskManager.Data
 {
-    public class DatabaseContext : IdentityDbContext<User, Role, Guid>
+    public class DatabaseContext : IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>,
+        IdentityUserRole<Guid>, IdentityUserLogin<Guid>, IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         public DbSet<ToDoTask> Tasks { get; set; }
         public DbSet<SubTask> SubTasks { get; set; }

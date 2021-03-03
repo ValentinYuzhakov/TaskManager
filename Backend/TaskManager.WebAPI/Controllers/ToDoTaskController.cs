@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -45,10 +46,10 @@ namespace TaskManager.WebAPI.Controllers
             return await toDoTaskService.FindById(taskId);
         }
 
-        [HttpGet("all/{userId:guid}")]
-        public async Task<IReadOnlyList<ToDoTaskShortView>> GetTasksByUser(Guid userId)
+        [HttpGet("all")]
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetTasksByUser()
         {
-            return await toDoTaskService.GetAllByUser(userId);
+            return await toDoTaskService.GetAllByUser(CurrentUserId);
         }
 
         [HttpPut("update")]
@@ -72,28 +73,28 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("done/{userId:guid}")]
-        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDoneTasks(Guid userId)
+        [HttpGet("done")]
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDoneTasks()
         {
-            return await toDoTaskService.GetDoneTasks(userId);
+            return await toDoTaskService.GetDoneTasks(CurrentUserId);
         }
 
-        [HttpGet("important/{userId:guid}")]
-        public async Task<IReadOnlyList<ToDoTaskShortView>> GetImportantTasks(Guid userId)
+        [HttpGet("important")]
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetImportantTasks()
         {
-            return await toDoTaskService.GetImportantTasks(userId);
+            return await toDoTaskService.GetImportantTasks(CurrentUserId);
         }
 
-        [HttpGet("daily/{userId:guid}")]
-        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDailyTasks(Guid userId)
+        [HttpGet("daily")]
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetDailyTasks()
         {
-            return await toDoTaskService.GetDailyTasks(userId);
+            return await toDoTaskService.GetDailyTasks(CurrentUserId);
         }
 
-        [HttpGet("planned/{userId:guid}")]
-        public async Task<IReadOnlyList<ToDoTaskShortView>> GetPlannedTasks(Guid userId)
+        [HttpGet("planned")]
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetPlannedTasks()
         {
-            return await toDoTaskService.GetPlannedTasks(userId);
+            return await toDoTaskService.GetPlannedTasks(CurrentUserId);
         }
 
         [HttpPut("move/{folderId:guid}/{taskId:guid}")]
@@ -103,10 +104,10 @@ namespace TaskManager.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("{folderId:guid}/{userId:guid}")]
-        public async Task<IReadOnlyList<ToDoTaskShortView>> GetTasksByFolder(Guid folderId, Guid userId)
+        [HttpGet("{folderId:guid}")]
+        public async Task<IReadOnlyList<ToDoTaskShortView>> GetTasksByFolder(Guid folderId)
         {
-            return await toDoTaskService.GetUserTasksByFolder(folderId, userId);
+            return await toDoTaskService.GetUserTasksByFolder(folderId, CurrentUserId);
         }
     }
 }

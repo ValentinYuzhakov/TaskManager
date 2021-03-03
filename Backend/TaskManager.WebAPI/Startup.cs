@@ -1,15 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TaskManager.Core.DataInitializers.Options;
 using TaskManager.Core.Extensions;
 using TaskManager.Core.Mapping;
 using TaskManager.Data;
-using TaskManager.Data.DataInitializers;
-using TaskManager.Data.DataInitializers.Options;
-using TaskManager.Data.Extensions;
 using TaskManager.Domain.Models;
 
 namespace TaskManager.WebAPI
@@ -27,19 +25,21 @@ namespace TaskManager.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AdminOptions>(Configuration.GetSection(nameof(AdminOptions)));
+            services.Configure<RolesOptions>(Configuration.GetSection(nameof(RolesOptions)));
+
             services.AddCustomDbContext<DatabaseContext>(Configuration);
             services.AddCustomIdentity<User, Role>()
                 .AddRoles<Role>()
-                .AddEntityFrameworkStores<DatabaseContext>();
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
 
-            services.Configure<AdminOptions>(Configuration.GetSection(nameof(AdminOptions)));
-            services.Configure<RolesOptions>(Configuration.GetSection(nameof(RolesOptions)));
             services.AddAutoMapper(config => config.AddProfile<MapProfile>());
             services.AddDataInitializers();
             services.AddServices();
             services.AddRepositories();
             services.AddControllers();
-            services.AddAuthentication();
+            services.AddJwtAuthentication(Configuration);
             services.AddAuthorization();
         }
 
@@ -51,10 +51,8 @@ namespace TaskManager.WebAPI
             }
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

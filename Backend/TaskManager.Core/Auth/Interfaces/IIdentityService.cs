@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Domain.Models;
@@ -7,12 +8,13 @@ using TaskManager.Shared;
 using TaskManager.Shared.Infos;
 using TaskManager.Shared.ViewModels;
 
-namespace TaskManager.Core.Services.Interfaces
+namespace TaskManager.Core.Auth.Interfaces
 {
-    public interface IUserService
+    public interface IIdentityService
     {
-        Task<Guid> Create(UserRegistrationInfo info);
+        Task<User> Register(UserRegistrationInfo info);
         Task<UserAuthorizeView> Authorize(UserAuthorizeInfo info);
-        Task InitializeSystemFolders(User user);
+        Task<RefreshResult> RefreshToken();
+        Task RevokeRefreshToken();
     }
 }

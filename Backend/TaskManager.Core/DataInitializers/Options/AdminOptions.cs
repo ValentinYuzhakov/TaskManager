@@ -1,5 +1,5 @@
 ﻿
-namespace TaskManager.Data.DataInitializers.Options
+namespace TaskManager.Core.DataInitializers.Options
 {
     public class AdminOptions
     {

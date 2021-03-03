@@ -7,9 +7,10 @@ namespace TaskManager.Domain.Models
 {
     public class User : IdentityUser<Guid>, IEntity
     {
-        public string FirstName { get; set; }
-        public string SecondName { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
         public IList<ToDoTask> Tasks { get; } = new List<ToDoTask>();
-        public IList<TaskFolder> TaskFolders { get; set; } = new List<TaskFolder>();
+        public List<TaskFolder> TaskFolders { get; set; } = new List<TaskFolder>();
+        public IList<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 }
