@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -49,6 +50,7 @@ namespace TaskManager.WebAPI.Controllers
         [HttpGet("all")]
         public async Task<IReadOnlyList<ToDoTaskShortView>> GetTasksByUser()
         {
+            var context = await HttpContext.GetTokenAsync("Bearer", "access_token");
             return await toDoTaskService.GetAllByUser(CurrentUserId);
         }
 

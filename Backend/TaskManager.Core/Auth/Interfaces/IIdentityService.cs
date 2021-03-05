@@ -16,5 +16,6 @@ namespace TaskManager.Core.Auth.Interfaces
         Task<UserAuthorizeView> Authorize(UserAuthorizeInfo info);
         Task<RefreshResult> RefreshToken();
         Task RevokeRefreshToken();
+        Task ConfirmEmailAsync(Guid userId, string token);
     }
 }

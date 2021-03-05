@@ -1,3 +1,4 @@
+using FluentEmail.MailKitSmtp;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -41,6 +42,15 @@ namespace TaskManager.WebAPI
             services.AddControllers();
             services.AddJwtAuthentication(Configuration);
             services.AddAuthorization();
+
+            services
+                .AddFluentEmail("taskmanager@info.com")
+                .AddRazorRenderer()
+                .AddMailKitSender(new SmtpClientOptions
+                {
+                    Server = "localhost",
+                    Port = 25
+                });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

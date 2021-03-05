@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -23,13 +24,15 @@ namespace TaskManager.Core.Auth
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly HttpContext httpContext;
+        private readonly IEmailService emailService;
 
 
         public IdentityService(UserManager<User> userManager,
             IMapper mapper, ITokenService tokenService,
             SignInManager<User> signInManager,
             IUserRepository userRepository,
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor,
+            IEmailService emailService)
         {
             this.userManager = userManager;
             this.mapper = mapper;
@@ -37,6 +40,7 @@ namespace TaskManager.Core.Auth
             this.signInManager = signInManager;
             this.userRepository = userRepository;
             httpContext = contextAccessor.HttpContext;
+            this.emailService = emailService;
         }
 
 
@@ -50,6 +54,8 @@ namespace TaskManager.Core.Auth
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(newUser, "User");
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                    await emailService.SendEmailAsync(newUser.Email, token);
                     return newUser;
                 }
 
@@ -90,7 +96,7 @@ namespace TaskManager.Core.Auth
 
         public async Task<RefreshResult> RefreshToken()
         {
-            var jwtToken = httpContext.Request.Headers["Authorization"].ToString().Split(" ")[1];
+            var jwtToken = await httpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, "access_token");
             var refreshToken = httpContext.Request.Headers["refresh-token"].ToString();
 
             return await tokenService.RefreshJwtToken(jwtToken, refreshToken);
@@ -103,6 +109,12 @@ namespace TaskManager.Core.Auth
 
             tokenService.RevokeRefreshToken(user, refreshToken);
             await userRepository.UpdateAsync(user);
+        }
+
+        public async Task ConfirmEmailAsync(Guid userId, string token)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            await userManager.ConfirmEmailAsync(user, token);
         }
     }
 }

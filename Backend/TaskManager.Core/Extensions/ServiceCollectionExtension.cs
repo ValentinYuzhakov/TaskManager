@@ -55,6 +55,7 @@ namespace TaskManager.Core.Extensions
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddSingleton<IEmailService, EmailService>();
 
             return services;
         }
