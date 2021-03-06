@@ -55,7 +55,7 @@ namespace TaskManager.Core.Auth
                 {
                     await userManager.AddToRoleAsync(newUser, "User");
                     var token = await userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                    await emailService.SendEmailAsync(newUser.Email, token);
+                    await emailService.SendConfirmationEmailAsync(token);
                     return newUser;
                 }
 

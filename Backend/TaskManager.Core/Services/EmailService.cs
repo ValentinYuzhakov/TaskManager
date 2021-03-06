@@ -24,5 +24,16 @@ namespace TaskManager.Core.Services
                 .Body(message)
                 .SendAsync();
         }
+
+        public async Task SendConfirmationEmailAsync(string token, string email = "")
+        {
+            var message = $"http://localhost:5000/api/Identity/confirm-email/{token}";
+
+            await fluentEmail
+                .To(email)
+                .Body(message)
+                .SendAsync();
+        }
+
     }
 }

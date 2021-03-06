@@ -1,19 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.Core.Auth.Interfaces;
 using TaskManager.Core.Services.Interfaces;
 using TaskManager.Domain.Models;
-using TaskManager.Shared.ViewModels;
 using TaskManager.Shared;
 using TaskManager.Shared.Infos;
+using TaskManager.Shared.ViewModels;
 
 namespace TaskManager.WebAPI.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/Identity")]
     public class IdentityController : SystemController
